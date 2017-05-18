@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <string>
 #include <cstdlib>
+#include <string.h>
+#include "ThuThu.h"
 using namespace std;
 #define MaxKT 10 //Max Khoang Trang
 #define MaxCN 50 //Max Cot Ngang
@@ -54,7 +56,7 @@ void luaChon( bool (*ham)() )
 {
     cout << endl;
     CanhLe(MaxKT);
-    cout << setw(26+7) << left << "1.Tro Lai" << setw(25) << left << "2.Tiep Tuc" << setw(20) << right << "3.Thoat" << endl;
+    cout << setw( (MaxKT*3 + MaxCN )/2 ) << left << "1.Tro Lai" << setw( (MaxCN + MaxKT*3)/2 + 3 ) << left << "2.Tiep Tuc" << right << "3.Thoat" << endl;
     cout << endl;
     Text_(" Lua chon cua ban : ") ;
     int choice ;
@@ -73,6 +75,7 @@ void luaChon( bool (*ham)() )
     if ( choice == 3 )
     {
         // Thoát khỏi role Thủ thư và đăng nhập lại ;
+        exit(1) ;
     }
     cin.clear(); cin.ignore(4276,'\n');
 }
@@ -95,4 +98,46 @@ bool CheckInt(string str)
 		}
 	}
 	return Check;
+}
+/* hàm in sách cần tìm
+*/
+void inSach( const string& data )// sau này có thể tách ra thành hàm riêng dùng chung cho xem sách trong ThuThu.cpp
+{
+    const char* chuyen = data.c_str();
+    const int leng = data.length();
+    char sach[leng]; strcpy( sach, chuyen );
+
+    int index = 0 ;
+    int width = 0 ;
+    CanhLe(MaxKT);
+    cout << "|";
+    int khtrang = 0;
+    for ( unsigned i = 0 ; i < data.length() ; i++ )
+        {
+            if ( sach[i] == ';' ){
+                if ( index == 0 )
+                {
+                        cout << setw(7-width) << " ";
+                        khtrang += 7-width;
+                }
+                if ( index == 1 )
+                {
+                    cout << setw(30-width) << " ";
+                    khtrang += 30 - width;
+                }
+                if ( index == 2 )
+                {
+                    cout << setw(25-width) << " ";
+                    khtrang += 20 - width;
+                }
+                width = 0;
+                index++;
+            }
+            else
+            {
+                cout << sach[i] ;
+                width++ ;
+            }
+        }
+        cout << setw(MaxCN + 37 - data.length()- khtrang ) << "|" << endl;
 }

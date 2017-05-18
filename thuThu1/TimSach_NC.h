@@ -6,7 +6,7 @@ using namespace std;
 char* nhapSach();
 char* sach_ThuVien( const string& data );
 int kcLevenshtien(  char *tim,  char *sach, int s_t, int s_s );
-void TimSach_NangCao();
+bool TimSach_NangCao();
 
 #endif // TIMSACH_NC_H_
 

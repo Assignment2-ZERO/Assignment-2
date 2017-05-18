@@ -18,4 +18,7 @@ void item( string s);
 bool CheckInt(string str);
 
 void veDuoi(int SoKyTu);
+
+void inSach( const string& data );
+
 #endif // FUNCTION_H_

@@ -3,27 +3,26 @@
 	<iostream>
 	"ThuThu.h"
 
-1494519236 source:c:\users\user\desktop\object\ass2\thuthu1\thuthu.cpp
+1495099885 source:c:\users\user\desktop\object\ass2\thuthu1\thuthu.cpp
+	<iostream>
+	<string>
+	<iomanip>
+	<cstdlib>
+	"function.h"
+	"XoaSach.h"
+	"ThemSach.h"
 	"ThuThu.h"
 	"TimSach_NC.h"
-	<iostream>
-	<fstream>
-	<sstream>
-	<string>
-	<string.h>
-	<iomanip>
-	<cstring>
-	<limits>
-	<cstdlib>
-	"function.h"
+	"XemSach.h"
+	"SuaSach.h"
 
-1494455905 c:\users\user\desktop\object\ass2\thuthu1\thuthu.h
+1495098356 c:\users\user\desktop\object\ass2\thuthu1\thuthu.h
 	<string>
 
-1494455905 c:\users\user\desktop\object\ass2\thuthu1\timsach_nc.h
+1495098963 c:\users\user\desktop\object\ass2\thuthu1\timsach_nc.h
 	<string>
 
-1494518489 source:c:\users\user\desktop\object\ass2\thuthu1\timsach_nc.cpp
+1495113374 source:c:\users\user\desktop\object\ass2\thuthu1\timsach_nc.cpp
 	<iostream>
 	<fstream>
 	<string>
@@ -34,12 +33,64 @@
 	<cstdlib>
 	"function.h"
 
-1494517711 source:c:\users\user\desktop\object\ass2\thuthu1\function.cpp
+1495115505 source:c:\users\user\desktop\object\ass2\thuthu1\function.cpp
 	<iostream>
 	<iomanip>
 	<string>
 	<cstdlib>
+	<string.h>
+	"ThuThu.h"
 
-1494517636 c:\users\user\desktop\object\ass2\thuthu1\function.h
+1495111772 c:\users\user\desktop\object\ass2\thuthu1\function.h
 	<string>
+
+1495098963 c:\users\user\desktop\object\ass2\thuthu1\xoasach.h
+
+1495128174 source:c:\users\user\desktop\object\ass2\thuthu1\xoasach.cpp
+	<fstream>
+	<string>
+	<string.h>
+	<cstdlib>
+	<cstdio>
+	<iostream>
+	<iomanip>
+	"function.h"
+
+1495120160 source:c:\users\user\desktop\object\ass2\thuthu1\themsach.cpp
+	<fstream>
+	<string>
+	<limits>
+	<iostream>
+	<sstream>
+	<cstdlib>
+	<string.h>
+	<iomanip>
+	"function.h"
+
+1495099679 c:\users\user\desktop\object\ass2\thuthu1\themsach.h
+
+1495111772 c:\users\user\desktop\object\ass2\thuthu1\xemsach.h
+
+1495113261 source:c:\users\user\desktop\object\ass2\thuthu1\xemsach.cpp
+	<iostream>
+	<cstdlib>
+	<iomanip>
+	<string>
+	<fstream>
+	<string.h>
+	"function.h"
+
+1495127816 source:c:\users\user\desktop\object\ass2\thuthu1\suasach.cpp
+	<fstream>
+	<string>
+	<string.h>
+	<cstdlib>
+	<stdio.h>
+	<iostream>
+	<iomanip>
+	<vector>
+	"function.h"
+	"XemSach.h"
+
+1495099822 c:\users\user\desktop\object\ass2\thuthu1\suasach.h
 

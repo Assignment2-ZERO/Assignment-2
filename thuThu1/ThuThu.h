@@ -7,6 +7,7 @@ class ThuThu
 {
     string accout ;
     string role_id ;
+    void inMENU();
 public :
     ThuThu( const string& acc, const string& id ) ;
     void timSach() ;
@@ -20,7 +21,6 @@ public :
     void yKien() ;
 
 };
-
 
 #endif // THUTHU_H_
 

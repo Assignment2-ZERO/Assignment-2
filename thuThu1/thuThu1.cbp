@@ -32,10 +32,18 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="SuaSach.cpp" />
+		<Unit filename="SuaSach.h" />
+		<Unit filename="ThemSach.cpp" />
+		<Unit filename="ThemSach.h" />
 		<Unit filename="ThuThu.cpp" />
 		<Unit filename="ThuThu.h" />
 		<Unit filename="TimSach_NC.cpp" />
 		<Unit filename="TimSach_NC.h" />
+		<Unit filename="XemSach.cpp" />
+		<Unit filename="XemSach.h" />
+		<Unit filename="XoaSach.cpp" />
+		<Unit filename="XoaSach.h" />
 		<Unit filename="function.cpp" />
 		<Unit filename="function.h" />
 		<Unit filename="main.cpp" />
