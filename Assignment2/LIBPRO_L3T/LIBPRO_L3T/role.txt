@@ -1,0 +1,28 @@
+{
+1
+Doc gia
+}
+{
+2
+Quan ly nguoi dung
+}
+{
+3
+Thu thu
+}
+{
+4
+Doc gia va quan ly nguoi dung
+}
+{
+5
+Doc gia va thu thu
+}
+{
+6
+Quan ly nguoi dung va thu thu
+}
+{
+7
+Doc gia, quan ly nguoi dung va thu thu
+}
