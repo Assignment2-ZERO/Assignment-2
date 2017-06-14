@@ -1,8 +1,0 @@
-{
-000
-tai khoan dangkhoa da duoc xet duyet
-}
-{
-000
-Tai khoan caoluong da duoc xet duyet
-}
