@@ -1,0 +1,109 @@
+# depslib dependency file v1.0
+1495717965 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\danhsach_nguoidung_taikhoan.cpp
+	<iostream>
+	<sstream>
+	<iomanip>
+	<fstream>
+	<string>
+	"function.h"
+	"tuychon.h"
+
+1497206361 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\main.cpp
+	<iostream>
+	<cstdlib>
+	"danhSach_NguoiDung_TaiKhoan.h"
+	"tinKiem_TaiKhoan.h"
+	"xoa_TaiKhoan.h"
+	"themTaiKhoan.h"
+	"mo_khoa_TaiKhoan.h"
+
+1495547333 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\mo_khoa_taikhoan.cpp
+	<string>
+	<iomanip>
+	<iostream>
+	<fstream>
+	<stdio.h>
+	<cstdlib>
+	<iostream>
+	"function.h"
+	"tuychon.h"
+	"tinKiem_TaiKhoan.h"
+
+1495718414 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\tinkiem_taikhoan.cpp
+	<iostream>
+	<sstream>
+	<iomanip>
+	<fstream>
+	<string>
+	<cstdlib>
+	<string.h>
+	<cctype>
+	"function.h"
+	"danhSach_NguoiDung_TaiKhoan.h"
+	"tuychon.h"
+
+1495721483 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\xoa_taikhoan.cpp
+	<string>
+	<iomanip>
+	<iostream>
+	<fstream>
+	<stdio.h>
+	<cstdlib>
+	<iostream>
+	"function.h"
+	"tuychon.h"
+
+1495721748 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\themtaikhoan.cpp
+	<cstdlib>
+	<string>
+	<fstream>
+	<iostream>
+	<string.h>
+	<sstream>
+	<cstdio>
+	<iomanip>
+	<vector>
+	"function.h"
+	"Fkkk.h"
+
+1495719217 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\function.h
+	<string>
+
+1495719332 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\function.cpp
+	<iostream>
+	<iomanip>
+	<string>
+	<cstdlib>
+	<string.h>
+	<stdio.h>
+
+1495439213 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\danhsach_nguoidung_taikhoan.h
+
+1495543383 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\tinkiem_taikhoan.h
+	<string>
+
+1495521342 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\xoa_taikhoan.h
+
+1495525051 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\tuychon.h
+
+1495527506 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\tuychon.cpp
+	<iostream>
+	<string>
+	<iomanip>
+	<cstdlib>
+	"function.h"
+	"xoa_TaiKhoan.h"
+
+1495617089 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\themtaikhoan.h
+
+1495543397 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\mo_khoa_taikhoan.h
+
+1495549941 source:c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\fkkk.cpp
+	<fstream>
+	<iostream>
+	<string>
+	<conio.h>
+	<cstdio>
+
+1495549941 c:\users\user\desktop\object\ass2\quanli\quanlinguoidung\fkkk.h
+
