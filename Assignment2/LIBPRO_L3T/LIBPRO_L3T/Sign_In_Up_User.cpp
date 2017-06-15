@@ -38,16 +38,10 @@ void SignUp_User(string &now_user_no, string & now_account_no)
 			break;
 		}
 
-		string no;
-		CanhLe(2 * MaxKT); cout << "So thu tu nguoi dung: ";
-		getline(cin, no);
-		Check = user.setuser_no(no);
-		if (Check == false)
-		{
-			string str = "So thu tu ban nhap co the khong dung dinh dang hoac da co trong du lieu !!!";
-			Sign_User_Fail(now_user_no, SignUp, str, "Dang ki", now_account_no);
-			break;
-		}
+		user.set_userno_signup();
+		user_no = user.getuser_no();
+		CanhLe(2 * MaxKT); cout << "So thu tu nguoi dung: " << user_no << endl;
+		
 
 		string mssv;
 		CanhLe(2 * MaxKT); cout << "Ma so sinh vien nguoi dung: ";
@@ -93,6 +87,11 @@ void SignUp_User(string &now_user_no, string & now_account_no)
 		}
 
 		user.write_user();
+		CanhLe(MaxKT); cout << "Ban da dang ki thanh cong!" << endl;
+		system("pause");
+		system("cls");
+		Menu_Libpro(now_user_no, now_account_no);
+
 	} while (Check == false);
 }
 
@@ -147,7 +146,6 @@ void Sign_User_Fail(string &now_user_no ,int what_fail, string str, string fail,
 
 void SignIn_User(string &now_user_no, string & now_account_no)
 {
-	string user_name, user_no;
 	bool Check;
 	User user1;
 
@@ -179,7 +177,7 @@ void SignIn_User(string &now_user_no, string & now_account_no)
 			Sign_User_Fail(now_user_no, SignIn, "So thu tu nhap khong dung dinh dang !!!", "Dang nhap", now_account_no);
 			break;
 		}
-		user1.setuser_no(no);
+		user1.set_userno_signin(no);
 		Check = user1.Check_SignIn();
 		if (Check == false)
 		{

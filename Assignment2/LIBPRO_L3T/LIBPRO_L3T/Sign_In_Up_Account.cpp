@@ -37,7 +37,7 @@ void Sign_Up_Account(string &now_user_no, string & now_account_no)
 		check = account.setaccount_no(account_no);
 		if (check == false)
 		{
-			Sign_Account_Fail(now_user_no, Sign_Fail::SignUp_Account,  "Ten tai khoan da ton tai", now_account_no);
+			Sign_Account_Fail(now_user_no, Sign_Fail::SignUp_Account,  "Ten tai khoan khong dung", now_account_no);
 			break;
 		}
 		now_account_no = account_no;
@@ -60,7 +60,38 @@ void Sign_Up_Account(string &now_user_no, string & now_account_no)
 		account.setActive(true);
 		account.setUser_no(now_user_no);
 		account.write_account();
-		Choice_Role(now_user_no, now_account_no);
+		bool Check;
+		string SChoice;
+		do
+		{
+			system("cls");
+			VeHang(MaxCN);
+			Text_Giua("LIBPRO", MaxCN, indent);
+			VeHang(MaxCN);
+			string str = "Vai tro " + account_no+ " mong muon quan ly cung cap cho ban: ";
+			Text_Giua(str, MaxCN, indent);
+			VeHang(MaxCN);
+			Text_Menu("1. Doc gia.", MaxCN, indent);
+			Text_Menu("2. Quan ly nguoi dung.", MaxCN, indent);
+			Text_Menu("3. Thu thu.", MaxCN, indent);
+			Text_Menu("4. Doc gia va Quan ly nguoi dung.", MaxCN, indent);
+			Text_Menu("5. Doc gia va Thu thu.", MaxCN, indent);
+			Text_Menu("6. Quan ly nguoi dung va Thu thu.", MaxCN, indent);
+			Text_Menu("7. Doc gia, Quan ly nguoi dung va Thu thu.", MaxCN, indent);
+			VeHang(MaxCN);
+			CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+			getline(cin, SChoice);
+			Check = true;
+			Check = Check_Choice(SChoice, 7);
+		} while (Check == false);
+		AccountRoleMap account_role;
+		account_role.setaccount_no(account_no);
+		account_role.setrole_id(SChoice);
+		account_role.Write_AccountRole();
+		CanhLe(MaxKT); cout << "Ban da dang ki thanh cong! Hay cho nguoi quan ly xet duyet dang ki cua ban." << endl;
+		system("pause");
+		system("cls");
+		Menu_User(now_user_no, now_account_no);
 	} while (check == false);
 }
 void Sign_Account_Fail(string &now_user_no, int what_fail, string str, string & now_account_no)
@@ -152,40 +183,7 @@ void Sign_Account_Fail(string &now_user_no, int what_fail, string str, string & 
 
 		
 }
-void Choice_Role(string &now_user_no, string &now_account_no)
-{
-	bool Check;
-	string SChoice;
-	do
-	{
-		system("cls");
-		VeHang(MaxCN);
-		Text_Giua("LIBPRO", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("Hay chon vai tro tai khoan cua ban", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Menu("1. Doc gia.", MaxCN, indent);
-		Text_Menu("2. Quan ly nguoi dung.", MaxCN, indent);
-		Text_Menu("3. Thu thu.", MaxCN, indent);
-		Text_Menu("4. Doc gia va Quan ly nguoi dung.", MaxCN, indent);
-		Text_Menu("5. Doc gia va Thu thu.", MaxCN, indent);
-		Text_Menu("6. Quan ly nguoi dung va Thu thu.", MaxCN, indent);
-		Text_Menu("7. Doc gia, Quan ly nguoi dung va Thu thu.", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
-		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 7);
-	} while (Check == false);
-	AccountRoleMap account_role;
-	account_role.setaccount_no(now_account_no);
-	account_role.setrole_id(SChoice);
-	account_role.Write_AccountRole();
-	CanhLe(MaxKT); cout << "Ban da dang ki thanh cong! Hay cho nguoi quan ly xet duyet dang ki cua ban." << endl;
-	system("pause");
-	system("cls");
-	Menu_User(now_user_no,now_account_no);
-}
+
 void Sign_In_Account(string &now_user_no,string &now_account_no)
 {
 	bool check;
@@ -207,7 +205,7 @@ void Sign_In_Account(string &now_user_no,string &now_account_no)
 		now_account_no = account.getaccount_no();
 		if (check == true)
 		{
-			Sign_Account_Fail(now_user_no, SignIn_Account, "Ten tai khoan khong ton tai trong du lieu", now_account_no);
+			Sign_Account_Fail(now_user_no, SignIn_Account, "Ten tai khoan khong dung", now_account_no);
 			break;
 		}
 		char password1[MaxPassword];

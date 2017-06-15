@@ -11,4 +11,6 @@ void VeHang(int SoKyTu);//In ra hàng ngang cua bảng gồm SoKyTu ký tự '~'
 bool Check_Date(string str);// Kiểm tra ngày tháng năm nhập vào có đúng không
 void Text_Menu_No(string str, int max, int what_indent);
 void Text_Giua_No(string str, int max, int what_indent);
+void Search_Role(string & now_user_no, string & now_account_no, string account_no);
+
 #endif

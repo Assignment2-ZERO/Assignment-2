@@ -4,9 +4,11 @@
 #include "Function.h"
 #include <fstream>
 #include <string>
+#include"Menu.h"
 using namespace std;
 #define MaxKT 10 //Max Khoang Trang
 enum INDENT { indent, no_indent };
+enum Role_Account { DOC_GIA = 1, QUAN_LY_NGUOI_DUNG, THU_THU, DG_QLND, DG_TT, QLND_TT, DG_QLND_TT };
 
 //Hàm kiểm tra chuỗi có phải là chuỗi số không
 bool CheckInt(string str)
@@ -33,7 +35,7 @@ bool Check_Choice(string str, int Total_Choice)
 		int Choice;
 		stringstream(str) >> Choice;
 		Check = false;
-		int NuChoice[20]; // Menu chi toi da 20 lua chon
+		int NuChoice[50]; // Menu chi toi da 20 lua chon
 		for (int i = 1; i <= Total_Choice; i++)
 		{
 			NuChoice[i - 1] = i;
@@ -98,6 +100,74 @@ void Text_Menu_No(string str, int max, int what_indent)
 	if (what_indent == indent)CanhLe(MaxKT);
 	cout << "|" << str << setw(max - str.length() - 1) << right << "|";
 }
+
+void Search_Role(string & now_user_no, string & now_account_no, string account_no)
+{
+	string line, role_deck, role_id;
+	fstream filein1, filein2;
+	filein1.open("account_role.txt", ios::in);
+	filein2.open("role.txt", ios::in);
+	while (!filein1.eof())
+	{
+		getline(filein1, line);
+		if (line == "{")
+		{
+			getline(filein1, line);//Read account_no
+			if (line == account_no)
+			{
+				getline(filein1, role_deck);//Read Read role_deck
+				while (!filein2.eof())
+				{
+					getline(filein2, line);
+					if (line == "{")
+					{
+						getline(filein2, role_id);
+						getline(filein2, line);
+						if (role_deck == line)break;
+					}
+				}
+				break;
+			}
+		}
+	}
+	int role;
+	stringstream(role_id) >> role;
+	filein1.close();
+	filein2.close();
+		switch (role)
+		{
+		case DOC_GIA:
+			system("cls");
+			Menu_Account_Reader(now_user_no, now_account_no);
+			break;
+		case QUAN_LY_NGUOI_DUNG:
+			system("cls");
+			Menu_Account_ManageUser(now_user_no, now_account_no);
+			break;
+		case THU_THU:
+			system("cls");
+			Menu_Account_Librarian(now_user_no, now_account_no);
+			break;
+		case DG_QLND:
+			system("cls");
+			Menu_Account_RM(now_user_no, now_account_no);
+			break;
+		case DG_TT:
+			system("cls");
+			Menu_Account_RL(now_user_no, now_account_no);
+			break;
+		case QLND_TT:
+			system("cls");
+			Menu_Account_ML(now_user_no, now_account_no);
+			break;
+		case DG_QLND_TT:
+			system("cls");
+			Menu_Account_RML(now_user_no, now_account_no);
+			break;
+		default:
+			break;
+		}
+}
 //Hàm kiểm tra ngày, tháng năm có đúng định dạng không
 bool Check_Date(string str)
 {
@@ -117,6 +187,8 @@ bool Check_Date(string str)
 		if (CheckInt(Date) == false)				Check = false;
 		else if (CheckInt(Month) == false)			Check = false;
 		else if (CheckInt(Year) == false)			Check = false;
+		else if (Nu_Month > 12 || Nu_Month < 1)Check = false;
+		else if (Nu_Date > 31 || Nu_Month < 1)Check = false;
 		else if ((Nu_Year % 4 == 0 && Nu_Year % 100 != 0) || Nu_Year % 400 == 0)//Nam nhuan
 		{
 			int End_Date[12] = { 31,29,31,30,31,30,31,31,30,31,30,31 };

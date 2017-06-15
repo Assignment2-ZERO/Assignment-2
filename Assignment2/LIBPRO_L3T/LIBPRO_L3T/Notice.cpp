@@ -103,7 +103,7 @@ void  Notice(string & now_user_no, string & now_account_no)
 					getline(filein1, line);
 					if (line == now_account_no)
 					{
-						check = true;//Co thhong bao moi
+						check = true;//Co thong bao moi
 						getline(filein1, line);//Read idea
 						do
 						{

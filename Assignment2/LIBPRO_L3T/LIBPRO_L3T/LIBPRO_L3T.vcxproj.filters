@@ -39,6 +39,9 @@
     <ClCompile Include="Notice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Review_SignUpAccount.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Function.h">
@@ -63,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Notice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Review_SignUpAccount.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

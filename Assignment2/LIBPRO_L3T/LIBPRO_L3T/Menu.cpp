@@ -10,6 +10,7 @@
 #include "Sign_In_Up_User.h"
 #include "Sign_In_Up_Account.h"
 #include "Suggestion_Resolution.h"
+#include "Review_SignUpAccount.h"
 #define MaxKT 10 //Max Khoang Trang
 #define MaxCN 100 //Max Cot Ngang danh cho 1 Role
 #define MaxCN2 50 //Max Cot Ngang danh cho 2 Role
@@ -55,6 +56,7 @@ void Menu_Libpro(string &now_user_no,string & now_account_no)
 		SignIn_User(now_user_no,now_account_no);
 		break;
 	case Sign_Up_User:
+		system("cls");
 		SignUp_User(now_user_no, now_account_no);
 		break;
 	case SearchBook_Libpro:
@@ -282,7 +284,21 @@ void Menu_Account_ManageUser(string &now_user_no, string & now_account_no)
 		Text_Giua("QUAN LY NGUOI DUNG", MaxCN, indent);
 		VeHang(MaxCN);
 
-		Text_Menu("1. Xet duyet yeu cau dang ky tai khoan.", MaxCN, indent);
+		fstream filein;
+		string line;
+		int nu_notice = 0;
+		filein.open("account_signup.txt", ios::in);
+		while (!filein.eof())
+		{
+			getline(filein, line);
+			if (line == "{")
+			{
+				nu_notice++;
+			}
+		}
+		line = "1. Xet duyet yeu cau dang ky tai khoan.( Co" + to_string(nu_notice) + " thong bao moi)";
+		filein.close();
+		Text_Menu(line, MaxCN, indent);
 		Text_Menu("2. Xet duyet reset mat khau cho tai khoan.", MaxCN, indent);
 		Text_Menu("3. Xem danh sach nguoi dung.", MaxCN, indent);
 		Text_Menu("4. Tim kiem nguoi dung.", MaxCN, indent);
@@ -311,7 +327,8 @@ void Menu_Account_ManageUser(string &now_user_no, string & now_account_no)
 	switch (Choice)
 	{
 	case 1:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		Review_account(now_user_no, now_account_no);
 		break;
 	case 2:
 		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
@@ -372,7 +389,28 @@ void Menu_Account_Librarian(string &now_user_no, string & now_account_no)
 		Text_Menu("4. Them sach.", MaxCN, indent);
 		Text_Menu("5. Nhan muon tra sach.", MaxCN, indent);
 		Text_Menu("6. Nhung nguoi dung qua han tra sach", MaxCN, indent);
-		Text_Menu("7. Giai quyet viec that lac sach.", MaxCN, indent);
+		fstream file;
+		file.open("suggestion.txt", ios::in);
+		string line;
+		int count = 0;
+		while (!file.eof())
+		{
+			getline(file, line);
+			if (line == "{")
+			{
+				getline(file, line);//Read account_no
+				getline(file, line);//Read idea
+				do
+				{
+					getline(file, line);//Read .
+					getline(file, line);
+					count++;
+				} while (line != "}");
+			}
+		}
+		file.close();
+		string str12 = "7. Giai viec viec that lac sach. (Co " + to_string(count) + " thong bao moi)";
+		Text_Menu(str12, MaxCN, indent);
 		Text_Menu("8. Tro lai (Dang xuat).", MaxCN, indent);
 		VeHang(MaxCN);
 		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
@@ -463,7 +501,19 @@ void Menu_Account_RM(string & now_user_no, string & now_account_no)
 		string str_notice = to_string(nu_notice);
 		string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
 		Text_Menu_No(str1, MaxCN2, indent);
-		Text_Menu("8. Xet duyet yeu cau dang ky tai khoan.", MaxCN2, no_indent);
+		nu_notice = 0;
+		filein.open("account_signup.txt", ios::in);
+		while (!filein.eof())
+		{
+			getline(filein, line);
+			if (line == "{")
+			{
+				nu_notice++;
+			}
+		}
+		line = "8. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+		filein.close();
+		Text_Menu(line, MaxCN2, no_indent);
 
 		Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
 		Text_Menu("9. Xet duyet reset mat khau cho tai khoan.", MaxCN2, no_indent);
@@ -556,10 +606,8 @@ void Menu_Account_RM(string & now_user_no, string & now_account_no)
 		Menu_Account_RM(now_user_no, now_account_no);
 		break;
 	case 8:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		Review_account(now_user_no, now_account_no);
 		break;
 	case 9:
 		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
@@ -818,8 +866,23 @@ void Menu_Account_ML(string & now_user_no, string & now_account_no)
 		Text_Giua("QUAN LY NGUOI DUNG", MaxCN2, no_indent);
 		VeHang(MaxCN);
 
+		fstream filein;
+		string line;
+		int nu_notice = 0;
+		filein.open("account_signup.txt", ios::in);
+		while (!filein.eof())
+		{
+			getline(filein, line);
+			if (line == "{")
+			{
+				nu_notice++;
+			}
+		}
+		line = "8. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+
+		filein.close();
 		Text_Menu_No("1. Tim sach.", MaxCN2, indent);
-		Text_Menu("8. Xet duyet yeu cau dang ky tai khoan.", MaxCN2, no_indent);
+		Text_Menu(line, MaxCN2, no_indent);
 
 		Text_Menu_No("2. Xem sach.", MaxCN2, indent);
 		Text_Menu("9. Xet duyet reset mat khau cho tai khoan.", MaxCN2, no_indent);
@@ -913,10 +976,8 @@ void Menu_Account_ML(string & now_user_no, string & now_account_no)
 		Menu_Account_ML(now_user_no, now_account_no);
 		break;
 	case 8:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		Review_account(now_user_no, now_account_no);
 		break;
 	case 9:
 		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
@@ -1031,7 +1092,20 @@ void Menu_Account_RML(string & now_user_no, string & now_account_no)
 		string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
 		Text_Menu_No(str1, MaxCN2, indent);
 		Text_Menu_No("8. Tim sach.", MaxCN2, no_indent);
-		Text_Menu("15. Xet duyet yeu cau dang ky tai khoan.", MaxCN2, no_indent);
+		 nu_notice = 0;
+		filein.open("account_signup.txt", ios::in);
+		while (!filein.eof())
+		{
+			getline(filein, line);
+			if (line == "{")
+			{
+				nu_notice++;
+			}
+		}
+		
+		line = "15. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+		filein.close();
+		Text_Menu(line, MaxCN2, no_indent);
 
 		Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
 		Text_Menu_No("9. Xem sach.", MaxCN2, no_indent);
@@ -1080,7 +1154,6 @@ void Menu_Account_RML(string & now_user_no, string & now_account_no)
 		getline(cin, SChoice);
 		Check = true;
 		Check = Check_Choice(SChoice, 26);
-		stringstream(SChoice) >> Choice;
 		if (Check == false)
 		{
 			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
@@ -1089,6 +1162,7 @@ void Menu_Account_RML(string & now_user_no, string & now_account_no)
 			continue;
 		}
 	} while (Check == false);
+	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
@@ -1176,10 +1250,8 @@ void Menu_Account_RML(string & now_user_no, string & now_account_no)
 		Menu_Account_RML(now_user_no, now_account_no);
 		break;
 	case 15:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		Review_account(now_user_no, now_account_no);
 		break;
 	case 16:
 		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;

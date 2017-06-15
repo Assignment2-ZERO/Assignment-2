@@ -24,6 +24,7 @@
     <ClCompile Include="LIBPRO.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Notice.cpp" />
+    <ClCompile Include="Review_SignUpAccount.cpp" />
     <ClCompile Include="Sign_In_Up_Account.cpp" />
     <ClCompile Include="Sign_In_Up_User.cpp" />
     <ClCompile Include="Suggestion_Resolution.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="Encode_Password.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Notice.h" />
+    <ClInclude Include="Review_SignUpAccount.h" />
     <ClInclude Include="Suggestion_Resolution.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Sign_In_Up_Account.h" />

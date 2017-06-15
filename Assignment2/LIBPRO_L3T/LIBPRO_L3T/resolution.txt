@@ -1,5 +1,14 @@
 {
 minhtham01
+0Ban la ai
+Toi ten la
+.
+asdasdasda
+toi ten la Nguyen Minh Tham
+.
+6Ban la ai
+12312312
+.
 1la ai
 123123
 .
@@ -22,6 +31,9 @@ toi la 6
 toi la 4
 .
 }
+
+
+
 
 
 

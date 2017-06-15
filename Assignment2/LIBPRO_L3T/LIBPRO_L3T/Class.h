@@ -42,8 +42,33 @@ public:
 				}
 			}
 		}
-		account_no = str;
 		file.close();
+		if (check == true)
+		{
+			file.open("account_signup.txt", ios::in);
+			// Kiểm tra xem account_no có tồn tại trong dữ liệu chưa ?(T là chưa, F là có)
+			while (!file.eof())
+			{
+				getline(file, line);
+				if (line == "{")
+				{
+					getline(file, line);//Đọc số thứ tự người dùng
+					getline(file, line);//Đọc tên tài khoản
+					if (line == str)
+					{
+						check = false;
+						break;
+					}
+				}
+			}
+			file.close();
+			if (str.length() < 4 && str.length() > 50)
+			{
+				check = false;
+			}
+		}
+		account_no = str;
+		
 		return check;
 	}
 	string getaccount_no()
@@ -93,8 +118,8 @@ public:
 	{
 		fstream file;
 		file.open("account_signup.txt", ios::out | ios::app);
-		file << "{\n" << user_no << "\n" << account_no << "\n" << password
-			<< "\n" << active << "\n}" << endl;
+		file << "\n{\n" << user_no << "\n" << account_no << "\n" << password
+			<< "\n" << active << "\n}";
 		file.close();
 	}
 	bool Check_SignIn()
@@ -147,7 +172,7 @@ public:
 	bool setuser_name(string str)
 	{
 		bool check = false;
-		if (!str.empty())
+		if (str.length() <= 50 && str.length() >= 4)// Kiem tra ky tu trong va toi da la 50, toi thieu la 4
 		{
 			check = true;
 			user_name = str;
@@ -160,7 +185,26 @@ public:
 	}
 
 	//USER_NO
-	bool setuser_no(string str)
+	void set_userno_signup()
+	{
+		string line, file_user_no;
+		fstream file;
+		file.open("user.txt", ios::in);
+		while (!file.eof())
+		{
+			getline(file, line);
+			if (line == "{")
+			{
+				getline(file, line);//Đọc tên
+				getline(file, file_user_no);//Đọc số thứ tự
+			}
+		}
+		int nu_user_no;
+		stringstream(file_user_no) >> nu_user_no;
+		user_no = to_string(nu_user_no + 1);
+		file.close();
+	}
+	bool set_userno_signin(string str)
 	{
 		bool check = true;
 		check = CheckInt(str);
@@ -313,8 +357,8 @@ public:
 	{
 		fstream file;
 		file.open("user.txt", ios::out | ios::app);
-		file << "{\n" << user_name << "\n" << user_no << "\n" << user_mssv
-			<< "\n" << user_birth << "\n" << user_job << "\n" << user_email << "\n}" << endl;
+		file << "\n{\n" << user_name << "\n" << user_no << "\n" << user_mssv
+			<< "\n" << user_birth << "\n" << user_job << "\n" << user_email << "\n}" ;
 		file.close();
 	}
 	bool Check_SignIn()
@@ -428,10 +472,46 @@ public:
 		role.setrole_id(role_id);
 		role.setrole_desc();
 		string role_deck = role.getrole_desc();		
-		fstream file;
-		file.open("account_role.txt", ios::app | ios::out);
-		file << "{\n" << account_no << "\n" << role_deck << "\n}" << endl;
-		file.close();
+		fstream filein1, filein2;
+		filein1.open("account_role.txt", ios::in);
+		filein2.open("replace.txt", ios::out);
+		string line;
+		while (!filein1.eof())
+		{
+			
+			getline(filein1, line);
+			if (line.empty())continue;
+			filein2 << "\n" << line ;
+			if (line == "{")
+			{
+				getline(filein1, line);//Read account_no
+				cout << line << endl;
+				filein2 << "\n";
+				filein2 << line;
+				
+				if (line == account_no)
+				{
+					filein2 << "\n";
+					filein2 << role_deck << "\n";
+					cout << role_deck << endl;
+					getline(filein1, line);
+					cout << line << endl;
+					getline(filein1, line);//Read }
+					filein2 << line;
+					continue;
+				}
+				getline(filein1, line);//Read role_deck
+				cout << line << endl;
+				filein2 << "\n";
+				filein2 << line << "\n";
+				getline(filein1, line);//Read }
+				filein2 << line;
+			}
+		}
+		filein1.close();
+		filein2.close();
+		remove("account_role.txt");
+		rename("replace.txt", "account_role.txt");
 	}
 private:
 	string account_no;

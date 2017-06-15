@@ -86,7 +86,7 @@ void Resolutions(string &now_user_no, string &now_account_no)
 				{
 					CanhLe(MaxKT);
 					cout << nu << ". " << setw(50) << left << account_no << " : " << endl;
-					cout << line << endl;
+					CanhLe(2*MaxKT); cout << line << endl;
 					getline(file, line);//Read .
 					getline(file, line);
 					nu++;
@@ -135,11 +135,12 @@ void Resolutions(string &now_user_no, string &now_account_no)
 						VeHang(MaxCN);
 						CanhLe(MaxKT);
 						cout << "Tai khoan " << account_no << " : " << endl;
+						CanhLe(2*MaxKT);
 						cout << line << endl;
 						idea = line;
 						CanhLe(MaxKT);
 						cout << "Tra loi : " << endl;
-						CanhLe(MaxKT);
+						CanhLe(2*MaxKT);
 						getline(cin, answer);
 						getline(file, line);// read .
 						break;
@@ -155,7 +156,6 @@ void Resolutions(string &now_user_no, string &now_account_no)
 
 				if (nu_ss == Choice)
 				{
-					cout << "ok" << endl;
 					//Viết vào file notice.txt:
 					fstream filein1, fileout1;
 					filein1.open("notice.txt", ios::in);
@@ -213,7 +213,7 @@ void Resolutions(string &now_user_no, string &now_account_no)
 		file.close();
 		remove("suggestion.txt");
 		rename("replace.txt", "suggestion.txt");
-
+		if(check==false)
 		CanhLe(MaxKT); cout << "Ban hay nhan mot phim bat ki de tro lai." << endl;
 		system("pause");
 		system("cls");
