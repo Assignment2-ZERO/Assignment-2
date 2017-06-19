@@ -272,7 +272,7 @@ void send_require_borrow_book()
 	bool Check;
 	string name_b;
 	ifstream input2;
-	input2.open("danhsachsachmuon.txt");
+	input2.open("giohang.txt");
 	getline(input2, name_b);
 	if (name_b.empty() == true)
 	{
@@ -440,20 +440,14 @@ cont:
 			}
 		}
 	}
-	srand(time(0));
-	long int a = 0;
-	while (a < 10000)
-		a = rand() % 100000;
 	// Dua thong tin muon sach vao file txt
 	send << "{" << endl;
 	his << "{" << endl;
 	//                                  ghi ten tai khoan vao file
 	send << "minhthamnguyen" << endl;
 	his << "minhthamnguyen" << endl;
-	send << a << endl;
-	his << a << endl;
 	ifstream input3;
-	input3.open("danhsachsachmuon.txt");
+	input3.open("giohang.txt");
 	while (!input3.eof())
 	{
 		getline(input3, name_b);
@@ -463,6 +457,7 @@ cont:
 	input3.close();
 	send << day_b << endl;
 	his << day_b << endl;
+	his << endl;
 	if (Nu_date < 10 && Nu_month < 10)
 	{
 		send << "0" << Nu_date << "-0" << Nu_month << "-" << Nu_year << endl;
@@ -493,11 +488,9 @@ cont:
 	Text_Giua("Thong tin muon sach cua ban:");
 	cout << endl;
 	CanhLe(MaxKT);
-	cout << "** ID muon sach cua ban (moi lan gui yeu cau muon sach se co mot ID khac nhau):  " << a << endl;
-	CanhLe(MaxKT);
 	cout << "** Danh sach sach ban muon muon:" << endl;
 	ifstream input4;
-	input4.open("danhsachsachmuon.txt");
+	input4.open("giohang.txt");
 	while (!input4.eof())
 	{
 		getline(input4, name_b);
@@ -563,7 +556,7 @@ void list_books()
 	bool Check;
 	int Choice, Choice2;
 	ifstream read;
-	read.open("danhsachsachmuon.txt");
+	read.open("giohang.txt");
 	getline(read, name_b);
 	if (name_b.empty() == true)
 	{
@@ -604,7 +597,7 @@ void list_books()
 		}
 	}
 	read.close();
-	read.open("danhsachsachmuon.txt");
+	read.open("giohang.txt");
 	VeHang(MaxCN);
 	Text_Giua("DANH SACH SACH BAN MUON MUON");
 	VeHang(MaxCN);
@@ -613,7 +606,7 @@ void list_books()
 	{
 		getline(read, name_b);
 		CanhLe(MaxKT);
-		cout << " -   " << name_b << endl;
+		cout << "  " << name_b << endl;
 	}
 	read.close();
 	do
