@@ -31,57 +31,57 @@ void require_select() {
 	system("cls");
 	string dau1 = "{", dau2 = "}";
 	string show_require;
-	string acc_name;
 	ifstream acc;
 	ifstream get_acc;
-	acc.open("account.txt");
 	VeHang(MaxCN);
 	Text_Giua("THONG TIN YEU CAU MUON SACH");
 	VeHang(MaxCN);
 	cout << endl;
-	while (!acc.eof())
+	acc.open("requires.txt");
+	getline(acc, show_require);
+	if (show_require.empty())
 	{
-		getline(acc, acc_name);
+		CanhLe(MaxKT);
+		cout << "Khong co yeu cau muon sach nao tu khach hang !!!" << endl;
+		acc.close();
+	}
+	else
+	{
+		acc.close();
+		// doc thong tin yeu cau muon sach
 		get_acc.open("requires.txt");
 		while (!get_acc.eof())
 		{
 			getline(get_acc, show_require);
 			if (show_require == dau1 || show_require == dau2)
 				continue;
-			if (acc_name == show_require)
+
+			CanhLe(MaxKT);
+			cout << "Tai khoan muon muon sach:   ";
+			cout << show_require << endl;
+			CanhLe(MaxKT);
+			cout << "Danh sach sach muon:" << endl;
+			do
 			{
-				CanhLe(MaxKT);
-				cout << "Tai khoan muon muon sach:   ";
-				cout << show_require << endl;
 				getline(get_acc, show_require);
-				CanhLe(MaxKT);
-				cout << "ID muon sach:               ";
-				cout << show_require << endl;
-				CanhLe(MaxKT);
-				cout << "Danh sach sach muon:" << endl;
-				do
+				if (show_require.substr(2, 1) != "-")
 				{
-					getline(get_acc, show_require);
-					if (show_require.substr(2, 1) != "-")
-					{
-						CanhLe(MaxKT);
-						cout << show_require << endl;
-					}
-				} while (show_require.substr(2, 1) != "-");
-				CanhLe(MaxKT);
-				cout << "Ngay muon:     ";
-				cout << show_require << endl;
-				CanhLe(MaxKT);
-				cout << "Ngay tra:      ";
-				getline(get_acc, show_require);
-				cout << show_require << endl;
-				VeHang(MaxCN);
-				cout << endl;
-			}
+					CanhLe(MaxKT);
+					cout << show_require << endl;
+				}
+			} while (show_require.substr(2, 1) != "-");
+			CanhLe(MaxKT);
+			cout << "Ngay muon:     ";
+			cout << show_require << endl;
+			CanhLe(MaxKT);
+			cout << "Ngay tra:      ";
+			getline(get_acc, show_require);
+			cout << show_require << endl;
+			VeHang(MaxCN);
+			cout << endl;
 		}
 		get_acc.close();
 	}
-	acc.close();
 	int Choice;
 	string SChoice;
 	bool Check;
@@ -141,7 +141,6 @@ void acc_all() {
 				continue;
 			if (acc_name == show_require)
 			{
-				getline(get_acc, show_require);
 				agree << show_require << endl;
 			}
 		}
@@ -186,17 +185,21 @@ void acc_all() {
 void acc_sel() {
 	VeHang(MaxCN);
 	ofstream agree("agree_require.txt", ios::app);
+	ofstream cau("require3.txt", ios::app);
+	int count = 0;
+	string dau1 = "{";
 	string get_name;
 	string show;
 	ifstream read;
 	cout << endl;
 	CanhLe(MaxKT);
-	cout << "Nhap ID muon sach duoc chap nhan muon sach: ";
+	cout << "Nhap ten tai khoan muon sach duoc chap nhan muon sach: ";
 	getline(cin, get_name);
 	read.open("requires.txt");
 	while (!read.eof())
 	{
 		getline(read, show);
+		count += 1;
 		if (show == get_name)
 		{
 			agree << get_name << endl;
@@ -207,16 +210,45 @@ void acc_sel() {
 			continue;
 	}
 	CanhLe(MaxKT);
-	cout << "Nhap sai ten ID muon sach. Vui long nhap lai" << endl;
+	cout << "Nhap sai ten tai khoan muon sach. Vui long nhap lai" << endl;
 	read.close();
 	acc_sel();
+	return;
 ok_next:
+	int count2 = 0;
+	string chep;
+	read.open("requires.txt");
+	while (!read.eof())
+	{
+		getline(read, chep);
+		count2 += 1;
+		if (count2 == count - 1)
+		{
+			getline(read, chep);
+			while (chep != "}")
+			{
+				getline(read, chep);
+			}
+				
+		}
+		else
+			cau << chep << endl;
+	}
+	read.close();
+	cau.close();
+	rename("requires.txt", "a.txt");
+	rename("require3.txt", "requires.txt");
+	rename("a.txt", "require3.txt");
+	ifstream xoafiletg;
+	xoafiletg.open("require3.txt");
+	xoafiletg.clear();
+	xoafiletg.close();
 	int Choice0;
 	string SChoice0;
 	bool Check2;
 	VeHang(MaxCN);
 	CanhLe(MaxKT);
-	cout << "Da dong y yeu cau muon sach cua tai khoan co ID muon sach la "
+	cout << "Da dong y yeu cau muon sach cua tai khoan "
 		<< get_name << endl;
 	CanhLe(MaxKT);
 	cout << "Tiep tuc chap nhan yeu cau muon sach cua khach hang ???" << endl;
