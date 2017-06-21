@@ -1,4 +1,0 @@
-﻿  spbtl.cpp
-c:\users\ductam\google drive\vs\spbtl\spbtl\function.h(70): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\ductam\google drive\vs\spbtl\spbtl\function.h(71): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\ductam\google drive\vs\spbtl\spbtl\spbtl.cpp(243): error C3867: 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::length': non-standard syntax; use '&' to create a pointer to member

@@ -3,95 +3,181 @@
 
 #include "stdafx.h"
 #include <iostream>
-#include <fstream>
 #include <iomanip>
 #include <string>
-#include <string.h>
+#include <fstream>
+#include <sstream>
+#include "Function.h"
 using namespace std;
 
-#define MaxKT 10 //Max Khoang Trang
-#define MaxCN 100 //Max Cot Ngang
-
-void Text_Giua(string str);
-void CanhLe(int Max);
-void VeHang(int SoKyTu);
-
+void ghingaytrasach();
 
 int main()
 {
-	system("cls");
-	char inf[25];
-	string dau1 = "{", dau2 = "}";
-	ifstream input;
-	VeHang(MaxCN);
-	Text_Giua("THONG TIN NGUOI DUNG");
-	VeHang(MaxCN);
-	cout << endl;
-	cout << setw(6) << left << "| Num"
-		<< setw(25) << left << "| Full name"
-		<< setw(10) << left << "| ID"
-		<< setw(15) << left << "| Birthday"
-		<< setw(20) << left << "| Career"
-		<< setw(25) << left << "| Email" << endl;
-	input.open("information_user.txt");
-	while (!input.eof())
-	{
-		input.getline(inf, 25);
-		if (inf == dau1 || inf == dau2)
-			continue;
-		cout << right << setw(6) << inf;
-		input.getline(inf, 25);
-		if (inf == dau1 || inf == dau2)
-			continue;
-		cout << right << setw(25) << inf;
-		input.getline(inf, 25);
-		if (inf == dau1 || inf == dau2)
-			continue;
-		cout << right << setw(10) << inf;
-		input.getline(inf, 25);
-		if (inf == dau1 || inf == dau2)
-			continue;
-		cout << right << setw(15) << inf;
-		input.getline(inf, 25);
-		if (inf == dau1 || inf == dau2)
-			continue;
-		cout << right << setw(20) << inf;
-		input.getline(inf, 25);
-		if (inf == dau1 || inf == dau2)
-			continue;
-		cout << right << setw(25) << inf;
-		cout << endl;
-	}
-	input.close();
+	ghingaytrasach();
 	system("pause");
     return 0;
 }
 
-//Lùi đầu dòng Max ký tự ' '
-void CanhLe(int Max)
-{
-	cout << setw(Max) << right << " ";
-}
-
-//In ra hàng ngang cua bảng gồm SoKyTu ký tự '*'
-void VeHang(int SoKyTu)
-{
+void ghingaytrasach() {
+	system("cls");
+	VeHang(MaxCN);
+	Text_Giua("DANH MUC TRA SACH CUA KHACH HANG");
+	VeHang(MaxCN);
+	cout << endl;
+	fstream ssgb;
+	fstream ssgb1;
+	fstream ssghi;
+	ssghi.open("gbb.txt", ios::app);
+	int scount = 0;
+	string ghig;
+	string sget_name;
+	string sget_date = "12-04-2018";
 	CanhLe(MaxKT);
-	for (int i = 0; i < SoKyTu; i++)
+	cout << "Tai khoan tra sach: ";
+	getline(cin, sget_name);
+	// kiem tra
+	ssgb.open("history.txt");
+	while (!ssgb.eof())
 	{
-		cout << "~";
+		getline(ssgb, ghig);
+		if (ghig == sget_name)
+		{
+			scount += 1;
+		}
 	}
-	cout << "\n";
+	if (scount == 0)
+	{
+		int sChoice0;
+		string sSChoice0;
+		bool sCheck2;
+		CanhLe(MaxKT);
+		cout << "Ten tai khoan khong ton tai. Vui long nhap lai !" << endl;
+		ssgb.close();
+		CanhLe(MaxKT);
+		cout << "1. Dong y." << endl;
+		CanhLe(MaxKT);
+		cout << "2. Quay ve trang chinh." << endl;
+		CanhLe(MaxKT);
+		cout << "3. Thoat." << endl;
+		do
+		{
+			CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+			getline(cin, sSChoice0);
+			sCheck2 = true;
+			sCheck2 = Check_Choice(sSChoice0, 3);
+			stringstream(sSChoice0) >> sChoice0;
+			if (sCheck2 == false)
+			{
+				cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
+				continue;
+			}
+		} while (sCheck2 == false);
+		switch (sChoice0)
+		{
+		case 1:
+			ghingaytrasach();
+			break;
+		case 2:
+			// quay lai menu chinh
+			break;
+		case 3:
+			// thoat
+			break;
+		}
+		return;
+	}
+	ssgb.close();
+	// them thoi gian he thong vao sget_date de dua vao muc tra sach
+
+	//
+	ssgb1.open("history.txt");
+	while (!ssgb1.eof())
+	{
+		getline(ssgb1, ghig);
+		if (ghig == sget_name)
+		{
+			while (ghig != "!")
+			{
+				ssghi << ghig << endl;
+				getline(ssgb1, ghig);
+			}
+			ssghi << ghig << endl;
+			getline(ssgb1, ghig);
+			ssghi << ghig << endl;
+			getline(ssgb1, ghig);
+			if (ghig == "yes")
+			{
+				ssghi << ghig << endl;
+				getline(ssgb1, ghig);
+				if (ghig.empty())
+				{
+					ssghi << sget_date << endl;
+					continue;
+				}
+				else
+				{
+					ssghi << ghig << endl;
+					continue;
+				}
+			}
+			else
+			{
+				ssghi << ghig << endl;
+				continue;
+			}
+		}
+		else
+		{
+			ssghi << ghig << endl;
+		}
+	}
+	ssghi.close();
+	ssgb1.close();
+	rename("history.txt", "tt.txt");
+	rename("gbb.txt", "history.txt");
+	rename("tt.txt", "gbb.txt");
+	system("del gbb.txt");
+	ofstream tao("gbb.txt");
+	tao.close();
+	int Choice0;
+	string SChoice0;
+	bool Check2;
+	VeHang(MaxCN);
+	CanhLe(MaxKT);
+	cout << "Da ghi lai ngay tra sach cua tai khoan "
+		<< sget_name << endl;
+	CanhLe(MaxKT);
+	cout << "Tiep tuc ghi lai ngay tra sach cho khach hang?" << endl;
+	CanhLe(MaxKT);
+	cout << "1. Dong y." << endl;
+	CanhLe(MaxKT);
+	cout << "2. Quay ve trang chinh." << endl;
+	CanhLe(MaxKT);
+	cout << "3. Thoat." << endl;
+	do
+	{
+		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		getline(cin, SChoice0);
+		Check2 = true;
+		Check2 = Check_Choice(SChoice0, 3);
+		stringstream(SChoice0) >> Choice0;
+		if (Check2 == false)
+		{
+			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
+			continue;
+		}
+	} while (Check2 == false);
+	switch (Choice0)
+	{
+	case 1:
+		ghingaytrasach();
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	}
 }
 
-//Ghi dòng chữ chính giữa hàng
-void Text_Giua(string str)
-{
-	int DoDai;
-	if (str.length() % 2 == 0)DoDai = str.length();
-	else DoDai = str.length() + 1;
-	CanhLe(MaxKT);
-	cout << "|" << setw((MaxCN - DoDai) / 2 + DoDai) << right << str
-		<< setw((MaxCN - DoDai) / 2) << right << "|\n";
-}
 
