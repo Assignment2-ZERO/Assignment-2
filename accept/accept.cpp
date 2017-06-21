@@ -53,23 +53,27 @@ void require_select() {
 		while (!get_acc.eof())
 		{
 			getline(get_acc, show_require);
-			if (show_require == dau1 || show_require == dau2)
+			if (show_require == dau1 || show_require == dau2 || show_require.empty())
 				continue;
 
 			CanhLe(MaxKT);
-			cout << "Tai khoan muon muon sach:   ";
+			cout << "Tai khoan muon sach:   ";
 			cout << show_require << endl;
 			CanhLe(MaxKT);
-			cout << "Danh sach sach muon:" << endl;
-			do
+			cout << "Danh sach sach muon (ID: Ten sach):" << endl;
+			getline(get_acc, show_require);
+			while (show_require.substr(2, 1) != "-")
 			{
-				getline(get_acc, show_require);
-				if (show_require.substr(2, 1) != "-")
+				if (show_require.length() > 2)
 				{
 					CanhLe(MaxKT);
 					cout << show_require << endl;
+					getline(get_acc, show_require);//doc so luong
+					CanhLe(MaxKT);
+					cout << "So luong sach nay can muon: " << show_require << endl;
 				}
-			} while (show_require.substr(2, 1) != "-");
+				getline(get_acc, show_require);//doc thoi gian
+			}
 			CanhLe(MaxKT);
 			cout << "Ngay muon:     ";
 			cout << show_require << endl;
@@ -122,32 +126,48 @@ void require_select() {
 
 // ham chap nhan tat ca yeu cau -------------------------------------------------------------------------
 void acc_all() {
-	ofstream agree("agree_require.txt", ios::app);
 	system("cls");
-	string dau1 = "{", dau2 = "}";
-	string show_require;
-	string acc_name;
-	ifstream acc;
-	ifstream get_acc;
-	acc.open("account.txt");
-	while (!acc.eof())
+	fstream agree;
+	agree.open("history.txt");
+	fstream ghi;
+	ghi.open("agree_require.txt", ios::app);
+	string write;
+	while (!agree.eof())
 	{
-		getline(acc, acc_name);
-		get_acc.open("requires.txt");
-		while (!get_acc.eof())
+		getline(agree, write);
+		if (write == "!")
 		{
-			getline(get_acc, show_require);
-			if (show_require == dau1 || show_require == dau2)
-				continue;
-			if (acc_name == show_require)
+			ghi << write << endl;
+			getline(agree, write);
+			ghi << write << endl;
+			getline(agree, write);
+			if (write.empty())
 			{
-				agree << show_require << endl;
+				ghi << "yes" << endl;
+				getline(agree, write);
+				ghi << write << endl;
+				getline(agree, write);
+				ghi << write << endl;
+			}
+			else
+			{
+				ghi << write << endl;
+				continue;
 			}
 		}
-		get_acc.clear();
-		get_acc.close();
+		else
+		{
+			ghi << write << endl;
+		}
 	}
-	acc.close();
+	agree.close();
+	ghi.close();
+	rename("history.txt", "a.txt");
+	rename("agree_require.txt", "history.txt");
+	rename("a.txt", "agree_require.txt");
+	system("del agree_require.txt");
+	ofstream taofile("agree_require.txt");
+	taofile.close();
 	VeHang(MaxCN);
 	Text_Giua("BAN DA CHAP NHAN TAT CA");
 	VeHang(MaxCN);
@@ -184,8 +204,8 @@ void acc_all() {
 // ham chap nhan theo tuy chon ------------------------------------------------------------------------
 void acc_sel() {
 	VeHang(MaxCN);
-	ofstream agree("agree_require.txt", ios::app);
-	ofstream cau("require3.txt", ios::app);
+	fstream cau;
+	cau.open("require3.txt", ios::app);
 	int count = 0;
 	string dau1 = "{";
 	string get_name;
@@ -195,6 +215,7 @@ void acc_sel() {
 	CanhLe(MaxKT);
 	cout << "Nhap ten tai khoan muon sach duoc chap nhan muon sach: ";
 	getline(cin, get_name);
+	// xoa thong tin muon sach cua nguoi da duoc chap nhan yeu cau
 	read.open("requires.txt");
 	while (!read.eof())
 	{
@@ -202,7 +223,6 @@ void acc_sel() {
 		count += 1;
 		if (show == get_name)
 		{
-			agree << get_name << endl;
 			read.close();
 			goto ok_next;
 		}
@@ -236,13 +256,56 @@ ok_next:
 	}
 	read.close();
 	cau.close();
-	rename("requires.txt", "a.txt");
+	rename("requires.txt", "b.txt");
 	rename("require3.txt", "requires.txt");
-	rename("a.txt", "require3.txt");
-	ifstream xoafiletg;
-	xoafiletg.open("require3.txt");
-	xoafiletg.clear();
-	xoafiletg.close();
+	rename("b.txt", "require3.txt");
+	system("del require3.txt");
+	ofstream taofile("require3.txt");
+	taofile.close();
+	// chap nhan cho tai khoan vua moi duoc chon
+	fstream sagree;
+	sagree.open("history.txt");
+	fstream sghi;
+	sghi.open("agree_require.txt", ios::app);
+	string swrite;
+	while (!sagree.eof())
+	{
+		getline(sagree, swrite);
+		if (swrite == get_name)
+		{
+			while (swrite != "!")
+			{
+				sghi << swrite << endl;
+				getline(sagree, swrite);
+			}
+			sghi << swrite << endl;
+			getline(sagree, swrite);
+			sghi << swrite << endl;
+			getline(sagree, swrite);
+			if (swrite.empty())
+			{
+				sghi << "yes" << endl;
+			}
+			else
+			{
+				sghi << swrite << endl;
+				continue;
+			}
+		}
+		else
+		{
+			sghi << swrite << endl;
+		}
+	}
+	sagree.close();
+	sghi.close();
+	rename("history.txt", "aa.txt");
+	rename("agree_require.txt", "history.txt");
+	rename("aa.txt", "agree_require.txt");
+	system("del agree_require.txt");
+	ofstream taofile2("agree_require.txt");
+	taofile2.close();
+	// ket thuc
 	int Choice0;
 	string SChoice0;
 	bool Check2;
@@ -288,12 +351,49 @@ ok_next:
 // ham tu choi tat ca yeu cau -------------------------------------------------------------------------
 void ref_all() {
 	system("cls");
-	ifstream del;
-	del.open("requires.txt");
-	del.clear();
-	del.close();
+	fstream agree;
+	agree.open("history.txt");
+	fstream ghi;
+	ghi.open("agree_require.txt", ios::app);
+	string write;
+	while (!agree.eof())
+	{
+		getline(agree, write);
+		if (write == "!")
+		{
+			ghi << write << endl;
+			getline(agree, write);
+			ghi << write << endl;
+			getline(agree, write);
+			if (write.empty())
+			{
+				ghi << "no" << endl;
+				getline(agree, write);
+				ghi << write << endl;
+				getline(agree, write);
+				ghi << write << endl;
+			}
+			else
+			{
+				ghi << write << endl;
+				continue;
+			}
+		}
+		else
+		{
+			ghi << write << endl;
+		}
+	}
+	agree.close();
+	ghi.close();
+	rename("history.txt", "a.txt");
+	rename("agree_require.txt", "history.txt");
+	rename("a.txt", "agree_require.txt");
+	system("del agree_require.txt");
+	ofstream taofile("agree_require.txt");
+	taofile.close();
 	VeHang(MaxCN);
-	Text_Giua("BAN DA CHAP NHAN TAT CA");
+	Text_Giua("BAN DA TU CHOI TAT CA");
 	VeHang(MaxCN);
 	int Choice3;
 	string SChoice3;
