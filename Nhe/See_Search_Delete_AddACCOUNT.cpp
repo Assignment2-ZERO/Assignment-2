@@ -43,7 +43,7 @@ void See_User_Account(string &now_user_no, string & now_account_no)
 			getline(filein, user_name);
 			CanhLe(MaxKT); cout << setw(50) << left << "- Ten nguoi dung: " << user_name << endl;
 			getline(filein, user_no);//Read user_no
-			CanhLe(2 * MaxKT); cout << setw(45) << left << "+ ID nguoi dung: " << user_no << endl;
+			CanhLe(2 * MaxKT); cout << setw(40) << left << "+ ID nguoi dung: " << user_no << endl;
 			getline(filein, line);//Read mssv
 			CanhLe(2 * MaxKT); cout << setw(50) << left << "+ Danh sach cac tai khoan : " << endl;
 			bool check_account = false;//Khong co tai khoan nao
@@ -108,7 +108,6 @@ void timKiemTK_TK(string&now_user_no,string&now_account_no)
 	getline(cin, tentk);
 	cout << endl;
 	CanhLe(MaxKT);
-	cout << " - Thong tin cua tai khoan : " << tentk << endl;
 	fstream acc, nd_tk, ro, acc_ro;
 	acc.open("account.txt", ios::in);
 	fstream filein;
@@ -128,6 +127,7 @@ void timKiemTK_TK(string&now_user_no,string&now_account_no)
 			getline(acc, active);
 			if (tk == tentk)
 			{
+				cout << " - Thong tin cua tai khoan : " << tentk << endl;
 				timthay = true;
 				nd_tk.open("user.txt", ios::in);
 				string user;
@@ -170,6 +170,41 @@ void timKiemTK_TK(string&now_user_no,string&now_account_no)
 		}
 	}
 	acc.close();
+	if (timthay == false)
+	{
+		CanhLe(MaxKT); cout << "Tai khoan ban nhap vao khong ton tai !!!" << endl;
+		CanhLe(MaxKT); cout << "Ban muon: " << endl;
+		CanhLe(2 * MaxKT); cout << "1. Tiep tuc. " << endl;
+		CanhLe(2 * MaxKT); cout << "2. Tro lai " << endl;
+		string schoice;
+		CanhLe(MaxKT); cout << "Lua chon: ";
+
+		getline(cin, schoice);
+		bool check;
+		check = Check_Choice(schoice, 2);
+		while (check == false)
+		{
+			CanhLe(MaxKT); cout << "Nhap sai. Nhap lai: ";
+			getline(cin, schoice);
+			check = Check_Choice(schoice, 2);
+		}
+		int choice;
+		stringstream(schoice) >> choice;
+		if (choice == 1)
+		{
+			system("cls");
+			timKiemTK_TK(now_user_no, now_account_no);
+		}
+		else
+		{
+			Search_Role(now_user_no, now_account_no, now_account_no);
+		}
+	}
+	else
+	{
+		system("pause");
+		Search_Role(now_user_no, now_account_no, now_account_no);
+	}
 }
 void Active_Account(string & now_user_no, string & now_account_no)
 {
