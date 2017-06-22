@@ -1,0 +1,10 @@
+\contentsline {section}{\numberline {1}H\IeC {\uhorn }\IeC {\'\ohorn }ng d\IeC {\~\acircumflex }n s\IeC {\h \uhorn } d\IeC {\d u}ng ph\IeC {\`\acircumflex }n m\IeC {\`\ecircumflex }m}{2}
+\contentsline {subsection}{\numberline {1.1}Menu LIBPRO}{2}
+\contentsline {subsection}{\numberline {1.2}Menu d\IeC {\`a}nh cho ng\IeC {\uhorn }\IeC {\`\ohorn }i d\IeC {\`u}ng}{3}
+\contentsline {subsection}{\numberline {1.3}Menu d\IeC {\`a}nh cho \IeC {\DJ }\IeC {\d \ocircumflex }c gi\IeC {\h a}}{5}
+\contentsline {subsection}{\numberline {1.4}Menu d\IeC {\`a}nh cho Qu\IeC {\h a}n l\IeC {\'y} ng\IeC {\uhorn }\IeC {\`\ohorn }i d\IeC {\`u}ng}{6}
+\contentsline {subsection}{\numberline {1.5}Menu d\IeC {\`a}nh cho Th\IeC {\h u} th\IeC {\uhorn }}{7}
+\contentsline {subsection}{\numberline {1.6}Menu d\IeC {\`a}nh cho \IeC {\DJ }\IeC {\d \ocircumflex }c gi\IeC {\h a} v\IeC {\`a} qu\IeC {\h a}n l\IeC {\'y} ng\IeC {\uhorn }\IeC {\`\ohorn }i d\IeC {\`u}ng}{8}
+\contentsline {subsection}{\numberline {1.7}Menu d\IeC {\`a}nh cho \IeC {\DJ }\IeC {\d \ocircumflex }c gi\IeC {\h a} v\IeC {\`a} th\IeC {\h u} th\IeC {\uhorn }}{8}
+\contentsline {subsection}{\numberline {1.8}Menu d\IeC {\`a}nh cho Qu\IeC {\h a}n l\IeC {\'y} ng\IeC {\uhorn }\IeC {\`\ohorn }i d\IeC {\`u}ng v\IeC {\`a} th\IeC {\h u} th\IeC {\uhorn }}{8}
+\contentsline {subsection}{\numberline {1.9}Menu d\IeC {\`a}nh cho \IeC {\DJ }\IeC {\d \ocircumflex }c gi\IeC {\h a}, qu\IeC {\h a}n l\IeC {\'y} ng\IeC {\uhorn }\IeC {\`\ohorn }i d\IeC {\`u}ng v\IeC {\`a} th\IeC {\h u} th\IeC {\uhorn }}{8}
