@@ -1,0 +1,17 @@
+{
+0003
+Quan ly da them tai khoan minhtham co mat khau la: 1234
+}
+[
+sach moi ve
+]
+{
+0000
+Tai khoan minhtham01 cua ban da duoc reset mat khau. Mat khau moi la : 1234
+}
+[
+Thu vien co sach moi ve la: huong dan
+]
+[
+Thu vien co sach moi ve la: aafe
+]

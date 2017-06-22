@@ -1,0 +1,24 @@
+{
+zero
+0000
+1613166
+22-07-1997
+Sinh Vien
+1613166@hcmut.edu.vn
+}
+{
+caoluong
+0001
+123456
+12-12-2014
+sinh vien
+aa@hcmut.edu.vn
+}
+{
+minhtham
+0003
+12312
+12-12-2016
+sinh vien
+hhh@hcmut.edu.vn
+}

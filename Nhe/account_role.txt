@@ -1,0 +1,48 @@
+{
+minhtham02
+Quan ly nguoi dung
+}
+{
+minhtham01
+Doc gia
+}
+{
+minhtham06
+Quan ly nguoi dung va thu thu
+}
+{
+minhtham07
+Doc gia, quan ly nguoi dung va thu thu
+}
+{
+minhtham03
+Thu thu
+}
+{
+minhtham04
+Doc gia va quan ly nguoi dung
+}
+{
+minhtham05
+Doc gia va thu thu
+}
+{
+minh01
+Quan ly nguoi dung
+}
+{
+minh02
+Quan ly nguoi dung
+}
+{
+minh03
+Quan ly nguoi dung
+}
+{
+minh04
+Quan ly nguoi dung
+}
+{
+minhtham
+Doc gia
+}
