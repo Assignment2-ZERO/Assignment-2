@@ -1,0 +1,22 @@
+1.Luong:
+Tim Sach.
+Them vao gio hang.
+Xem va chinh sua gio hang.
+Xoa sach
+2.Tam
+Gui yeu cau muon sach
+Xet duyet yeu cau muon sach
+Xet duyet yeu cau tra sach
+3.Thành:
+Xét duyet reset mat khau.
+Quên m?t kh?u.
+Xóa ngu?i dùng
+Tìm ki?m và xem danh sách ngu?i dùng
+4.Thám
+Dang kí ngu?i dùng
+Ðang kí,dang nh?p tài kho?n
+Xem thoogn báo ngu?i dùng
+G?i thông báo vi?c th?t l?c sách
+Xét duy?t dang kí tài kho?n.
+Ngu?i dùng quá h?n tr? sách
+Gi?i quy?t thông báo vi?c th?t l?c sách.
