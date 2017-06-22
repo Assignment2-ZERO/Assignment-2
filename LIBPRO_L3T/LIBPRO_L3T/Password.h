@@ -7,5 +7,6 @@ void ChangePassWord(string & now_user_no, string & now_account_no, char Password
 void CheckPassWord(string & now_user_no, string & now_account_no, string &PassWordUserEnter, string PassWordInData);
 void GetPassWord(char PW[]);
 void ReplacePassWordInSystem(string &StringAccount, string &StringNew);
+void ResetPassWord(string&now_user_no, string & now_account_no);
 
 #endif

@@ -137,35 +137,36 @@ void Review_account(string & now_user_no,string & now_account_no)
 			while (!filein1.eof())
 			{
 				getline(filein1, line);
+				if (line.empty())continue;
 				if (line == "{")
 				{
 					nu++;
 					if (nu == choice)
 					{
-						fileout << "\n" << line;
+						fileout << line << "\n";
 						getline(filein1, line);//Read user_no
-						fileout << "\n" << line;
+						fileout << line << "\n";
 						getline(filein1, account_no);//Read account_no
-						fileout << "\n" << account_no;
+						fileout << account_no << "\n" ;
 						getline(filein1, line);//Read password
-						fileout << "\n" << line;
+						fileout << line << "\n";
 						getline(filein1, line);//Read actinve
-						fileout << "\n" << line;
+						fileout << line << "\n";
 						getline(filein1, line);//Read }
-						fileout << "\n" << line;
+						fileout << line << "\n";
 						continue;
 					}
-						filein2 << "\n" << line;
+						filein2  << line << "\n";
 						getline(filein1, line);//Read user_no
-						filein2 << "\n" << line;
+						filein2 << line << "\n";
 						getline(filein1, line);//Read account_no
-						filein2 << "\n" << line;
+						filein2 << line << "\n";
 						getline(filein1, line);//Read password
-						filein2 << "\n" << line;
+						filein2 << line << "\n";
 						getline(filein1, line);//Read actinve
-						filein2 << "\n" << line;
+						filein2 << line << "\n";
 						getline(filein1, line);//Read }
-						filein2 << "\n" << line;
+						filein2 << line << "\n";
 				}
 			}
 			filein1.close();
@@ -217,25 +218,21 @@ void Review_account(string & now_user_no,string & now_account_no)
 			filein1.open("account_signup.txt", ios::in);
 			fileout.open("account.txt", ios::out | ios::app);
 			string line;
-			int count = 0;
 			while (!filein1.eof())
 			{
 				getline(filein1, line);
-				fileout << "\n" << line;
-				if (line == "{")
-				{
-					count++;
-					getline(filein1, line);//Read user_no
-					fileout << "\n" << line;
-					getline(filein1, line);//Read account_no
-					fileout << "\n" << line;
-					getline(filein1, line);//Read password
-					fileout << "\n" << line;
-					getline(filein1, line);//Read actinve
-					fileout << "\n" << line;
-					getline(filein1, line);//Read }
-					fileout << "\n" << line;
-				}
+				if (line.empty())continue;
+				fileout << line << "\n";
+				getline(filein1, line);//Read user_no
+				fileout << line << "\n";
+				getline(filein1, line);//Read account_no
+				fileout << line << "\n";
+				getline(filein1, line);//Read password
+				fileout << line << "\n";
+				getline(filein1, line);//Read actinve
+				fileout << line << "\n";
+				getline(filein1, line);//Read }
+				fileout << line << "\n";
 			}
 			filein1.close();
 			fileout.close();
@@ -265,7 +262,6 @@ void Review_account(string & now_user_no,string & now_account_no)
 			} while (Check == false);
 			for (int i=0;i<number;i++)
 			{
-				cout << account[i] << endl;
 				AccountRoleMap *account_role = new AccountRoleMap();
 				account_role->setaccount_no(account[i]);
 				account_role->setrole_id(SChoice);

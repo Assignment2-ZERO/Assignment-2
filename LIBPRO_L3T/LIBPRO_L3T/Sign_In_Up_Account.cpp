@@ -10,7 +10,7 @@
 using namespace std;
 #define MaxKT 10 //Max Khoang Trang
 #define MaxCN 100 //Max Cot Ngang
-#define MaxPassword 500
+#define MaxPassword 50
 #define CL 25
 #define qmk 40
 enum Sign_Fail { SignIn_Account, SignUp_Account };
@@ -38,7 +38,7 @@ void Sign_Up_Account(string &now_user_no, string & now_account_no)
 		check = account.setaccount_no(account_no);
 		if (check == false)
 		{
-			Sign_Account_Fail(now_user_no, Sign_Fail::SignUp_Account,  "Ten tai khoan khong dung", now_account_no);
+			Sign_Account_Fail(now_user_no, Sign_Fail::SignUp_Account,  "Ten tai khoan da ton tai hoac khong dung dinh dang", now_account_no);
 			break;
 		}
 		now_account_no = account_no;
@@ -98,6 +98,7 @@ void Sign_Up_Account(string &now_user_no, string & now_account_no)
 void QuenMK(string&now_user_no, string & now_account_no)
 {
 	bool kiemtra;
+	string account;
 	do
 	{
 		kiemtra = true;
@@ -157,10 +158,10 @@ void QuenMK(string&now_user_no, string & now_account_no)
 		}
 		
 		CanhLe(MaxKT); cout << setw(qmk) << left << "Tai khoan muon doi mat khau: ";
-		getline(cin, nhap);
+		getline(cin, account);
 
 		filein.open("account.txt", ios::in); //Mở file trong chế độ đọc
-		bool check_account = false;
+		bool check_account = false, check_password = false;
 		while (!filein.eof()) //bắt đầu vòng lặp
 		{
 			getline(filein, line);//lấy từng dòng trong file ra , nếu gặp  dấu { thì dòng tiếp theo chính là acc 
@@ -170,36 +171,32 @@ void QuenMK(string&now_user_no, string & now_account_no)
 				if (line == now_user_no)
 				{
 					getline(filein, line);// account của người dùng 
-					if (line == nhap)//So sánh với Acc người  dùng vừa nhập
+					if (line == account)//So sánh với Acc người  dùng vừa nhập
 					{
 						check_account = true;
-						char NewPassWord1[100];
-						char NewPassWord2[100];
-						CanhLe(MaxKT);
-						cout << setw(qmk) << left << "Nhap mat khau moi :";
-						EncodePassWord(NewPassWord1); cout << endl;           //gọi lại hàm MÃ Hóa MK để mã hóa cho MK mới
-						string NewPassword1(NewPassWord1);           //chuyển chuỗi mk vừa nhập thành 1 string tên NewPassword1
-						CanhLe(MaxKT);
-						cout << setw(qmk) << left << "Xac nhan lai mat khau moi :";
-						EncodePassWord(NewPassWord2); cout << endl;
-						cout << NewPassWord1 << endl;
-						cout << nhap << endl;
-						string NewPassword2(NewPassWord2);
-						if (NewPassword2 == NewPassword1)
+						check_password = true;//Khong co trong file
+						fstream file;
+						string line;
+						file.open("lost_password.txt", ios::in);
+						while (!file.eof())
 						{
-							filein.close();
-							ReplacePassWordInSystem(nhap, NewPassword1);
-							CanhLe(MaxKT); cout << "Ban da doi mat khau thanh cong !!!" << endl;
-							system("pause");
-							system("cls");
-							Menu_User(now_user_no,now_account_no);
-							break;
+							getline(file, line);//Read account_no
+							if (line.empty())continue;
+							if (line == account)
+							{
+								check_password = false;//yeu cau da co trong file
+								CanhLe(MaxKT); cout << "Ban da gui yeu cau reset mat khau cho nguoi quan ly. !!!" << endl;
+								CanhLe(MaxKT); cout << "Nhap ky tu bat ky de tro lai !!!" << endl;
+								system("pause");
+								system("cls");
+								file.close();
+								Menu_User(now_user_no, now_account_no);
+								break;
+
+							}
+							
 						}
-						else
-						{
-							KT_QuenMK(now_user_no, now_account_no, "Cac mat khau khong khop !!!");
-							break;
-						}
+						file.close();
 					}
 				}
 			}
@@ -209,6 +206,18 @@ void QuenMK(string&now_user_no, string & now_account_no)
 		{
 			KT_QuenMK(now_user_no, now_account_no, "Tai khoan ban nhap vao khong ton tai!!!");
 			break;
+		}
+		if (check_password == true)
+		{
+			CanhLe(MaxKT); cout << "Yeu cau reset mat khau cua ban da gui thanh cong. !!!" << endl;
+			CanhLe(MaxKT); cout << "Nhap ky tu bat ky de tro lai !!!" << endl;
+			system("pause");
+			system("cls");
+			fstream file;
+			file.open("lost_password.txt", ios::out | ios::app);
+			file  << account << "\n" ;
+			file.close();
+			Menu_User(now_user_no, now_account_no);
 		}
 	} while (kiemtra == false);
 }
@@ -263,20 +272,18 @@ void Sign_Account_Fail(string &now_user_no, int what_fail, string str, string & 
 			CanhLe(2 * MaxKT);	cout << "1. Dang nhap lai.\n";
 			CanhLe(2 * MaxKT);	cout << "2. Quen mat khau.\n";
 			CanhLe(2 * MaxKT);	cout << "3. Tro lai.\n";
-			CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+			CanhLe(MaxKT);	cout << "Lua chon : ";
 			getline(cin, SChoice);
 			Check = true;
 			Check = Check_Choice(SChoice, 3);
-			stringstream(SChoice) >> Choice;
-
-			if (Check == false)// Nếu kiểm tra biến nhập vào ko phù hợp thì yêu cầu nhập lại
+			while (Check == false)
 			{
-				CanhLe(MaxKT);	cout << "Ban da nhap sai. Moi ban nhap lai !\n ";
-				system("pause");
-				system("cls");
-				continue;
+				CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai  : ";
+				getline(cin, SChoice);
+				Check = Check_Choice(SChoice, 3);
 			}
-			else if (Choice == 1)
+			stringstream(SChoice) >> Choice;
+			if (Choice == 1)
 			{
 				system("cls");
 				Sign_In_Account(now_user_no, now_account_no);

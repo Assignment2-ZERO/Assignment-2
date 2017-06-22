@@ -45,6 +45,18 @@
     <ClCompile Include="Search_See_DeleteUSER.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="See_Search_Delete_AddACCOUNT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Xem_Sua_Xoa_ThemSACH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GioHang.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Muon_ChapNhanMuon_TraSACH.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Function.h">
@@ -75,6 +87,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Search_See_DeleteUSER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="See_Search_Delete_AddACCOUNT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Xem_Sua_Xoa_ThemSACH.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GioHang.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MuonTraSACH.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

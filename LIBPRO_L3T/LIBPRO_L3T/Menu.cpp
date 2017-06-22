@@ -11,7 +11,12 @@
 #include "Sign_In_Up_User.h"
 #include "Sign_In_Up_Account.h"
 #include "Suggestion_Resolution.h"
+#include "See_Search_Delete_AddACCOUNT.h"
 #include "Search_See_DeleteUSER.h"
+#include "Xem_Sua_Xoa_ThemSACH.h"
+#include "MuonTraSACH.h"
+#include "Xem_Sua_Xoa_ThemSACH.h"
+#include "GioHang.h"
 #define max 50
 #include "Review_SignUpAccount.h"
 #define MaxKT 10 //Max Khoang Trang
@@ -20,7 +25,7 @@
 #define MaxCN3 150 
 enum Menu_Libpro { Sign_In_User = 1, Sign_Up_User, SearchBook_Libpro, SeeBook_Libpro, Stop_Libpro };
 enum INDENT { indent, no_indent };
-enum Menu_User { SignIn_Account = 1, SignUp_Account, Notice_User, Information_User, SearchBook_User, SeeBook_User, SignOut_User };
+enum Menu_User { SignIn_Account = 1, SignUp_Account, Notice_user, Information_User, SearchBook_User, SeeBook_User, SignOut_User };
 void Menu_Libpro(string &now_user_no,string & now_account_no)
 {
 	now_user_no = "-1";
@@ -34,9 +39,14 @@ void Menu_Libpro(string &now_user_no,string & now_account_no)
 		Text_Giua("MENU LIBPRO", MaxCN, indent);
 		VeHang(MaxCN);
 		Text_Menu("1. Dang nhap nguoi dung.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("2. Dang ki nguoi dung.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("3. Tim sach.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("4. Xem sach.", MaxCN, indent);
+		veDuoi(MaxCN);
+
 		Text_Menu("5. Thoat.", MaxCN, indent);
 		VeHang(MaxCN);
 		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
@@ -63,10 +73,12 @@ void Menu_Libpro(string &now_user_no,string & now_account_no)
 		SignUp_User(now_user_no, now_account_no);
 		break;
 	case SearchBook_Libpro:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case SeeBook_Libpro:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case Stop_Libpro:
 		break;
@@ -75,6 +87,18 @@ void Menu_Libpro(string &now_user_no,string & now_account_no)
 
 void Menu_User(string &now_user_no,string & now_account_no)
 {
+
+	fstream giohang;
+	ofstream giohangtrong;
+	giohang.open("GioHang.txt", ios::in);
+	giohangtrong.open("GioHangTrong.txt");
+	giohang.close();
+	giohangtrong.close();
+	remove("GioHang.txt");
+	rename("GioHangTrong.txt", "GioHang.txt");
+
+		
+	string line;
 	int  Choice;
 	string SChoice;//String Choice 
 	bool Check;
@@ -103,7 +127,7 @@ void Menu_User(string &now_user_no,string & now_account_no)
 		file.open("user.txt", ios::in);
 		while (!file.eof())
 		{
-			string line;
+
 			getline(file, line);
 			if (line == "{")
 			{
@@ -112,24 +136,49 @@ void Menu_User(string &now_user_no,string & now_account_no)
 				if (search == Csearch)
 				{
 					VeHang(MaxCN);
-					string in = "Xin chao " + line + " !!!";
+					string in = "Xin chao " + line + " !!!";//In ten nguoi dung
 					Text_Giua(in, MaxCN, indent);
 					break;
 				}
 			}
 		}
 		file.close();
-		
+		//Kiem tra thong bao moi cua nguoi dung
+		file.open("notice_user_new.txt", ios::in);
+		int nu_notice = 0;
+		while (!file.eof())
+		{
+			getline(file, line);
+			if (line == "{")
+			{
+				getline(file, line);
+				if (line == now_user_no)
+				{
+					nu_notice++;
+					continue;
+				}
+			}
+		}
+		file.close();
+
+
 		VeHang(MaxCN);
 		Text_Giua("MENU USER", MaxCN, indent);
 		VeHang(MaxCN);
 		
 		Text_Menu("1. Dang nhap tai khoan.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("2. Dang ki tai khoan.", MaxCN, indent);
-		Text_Menu("3. Xem thong bao.", MaxCN, indent);
-		Text_Menu("4. Xem thong tin nguoi dung", MaxCN, indent);
+		veDuoi(MaxCN);
+		line = "3. Xem thong bao.(Co " + to_string(nu_notice) + " thong bao moi)";
+		Text_Menu(line, MaxCN, indent);
+		veDuoi(MaxCN);
+		Text_Menu("4. Xem thong tin nguoi dung.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("5. Tim sach.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("6. Xem sach.", MaxCN, indent);
+		veDuoi(MaxCN);
 		Text_Menu("7. Tro lai (Dang xuat).", MaxCN, indent);
 		VeHang(MaxCN);
 		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
@@ -155,17 +204,27 @@ void Menu_User(string &now_user_no,string & now_account_no)
 		system("cls");
 		Sign_Up_Account(now_user_no, now_account_no);
 		break;
-	case Notice_User:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+	case Menu_User::Notice_user:
+		system("cls");
+		Notice_User(now_user_no, now_account_no);
 		break;
 	case Information_User:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+	{
+		system("cls");
+		VeHang(MaxCN);
+		string str = "THONG TIN CUA " + line;
+		Text_Giua(str, MaxCN, indent);
+		VeHang(MaxCN);
+		See_User(now_user_no, now_account_no);
 		break;
+	}
 	case SearchBook_User:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case SeeBook_User:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case SignOut_User:
 		system("cls");
@@ -175,160 +234,185 @@ void Menu_User(string &now_user_no,string & now_account_no)
 }
 void Menu_Account_Reader(string &now_user_no, string & now_account_no)
 {
-	int  Choice;
-	string SChoice;//String Choice 
-	bool Check;
-	do
-	{
-		
-		VeHang(MaxCN);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("MENU ACCOUNT", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("DOC GIA", MaxCN, indent);
-		VeHang(MaxCN);
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("MENU DOC GIA", MaxCN, indent);
+	VeHang(MaxCN);
 
-		fstream filein;
-		string line;
-		int nu_notice = 0;
-		filein.open("notice.txt", ios::in);
-		while (!filein.eof())
+	fstream filein;
+	string line;
+	int nu_notice = 0;
+	filein.open("notice_account_new.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
 		{
 			getline(filein, line);
-			if (line == "{")
+			if (line == now_account_no)
 			{
-				getline(filein, line);
-				if (line == now_account_no)
-				{
-					getline(filein, line);//Read idea
-					do
-					{
-						nu_notice++;
-						getline(filein, line);//Read answer
-						getline(filein, line);//Read .
-						getline(filein, line);
-					} while (line != "}");
-					break;
-				}
+				nu_notice++;
+				continue;
 			}
 		}
-		filein.close();
-		string str_notice = to_string(nu_notice);
-		string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
-		Text_Menu(str1, MaxCN, indent);
-		Text_Menu("2. Xem thong tin.", MaxCN, indent);
-		Text_Menu("3. Tim sach", MaxCN, indent);
-		Text_Menu("4. Xem sach", MaxCN, indent);
-		Text_Menu("5. Gui yeu cau muon sach", MaxCN, indent);
-		Text_Menu("6. Gui thong bao viec that lac sach.", MaxCN, indent);
-		Text_Menu("7. Doi mat khau.", MaxCN, indent);
-		Text_Menu("8. Tro lai (Dang xuat).", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+	}
+	filein.close();
+	string str1 = "1. Xem thong bao. (Co " + to_string(nu_notice) + " thong bao moi.)";
+
+	Text_Menu(str1, MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("2. Xem thong tin.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("3. Xem sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("4. Tim sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("5. Them sach vao gio hang.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("6. Xem va chinh sua gio hang.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("7. Gui yeu cau muon sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("8. Gui thong bao viec that lac sach hay dong gop y kien.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("9. Doi mat khau.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("10. Tro lai (Dang xuat).", MaxCN, indent);
+	VeHang(MaxCN);
+	CanhLe(MaxKT);	cout << "Lua chon : ";
+
+	int  Choice;
+	string SChoice;//String Choice 
+	bool Check = true;
+	getline(cin, SChoice);
+	Check = Check_Choice(SChoice, 10);
+	while (Check == false)
+	{
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
 		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 9);
-		stringstream(SChoice) >> Choice;
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
+		Check = Check_Choice(SChoice, 10);
+	}
+	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
 		system("cls");
-		Notice(now_user_no, now_account_no);
+		Notice_Account(now_user_no, now_account_no);
 		break;
 	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		ThongTin_TaiKhoan(now_user_no, now_account_no);
 		break;
 	case 3:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case 4:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");	
+		themVaoGioHang(now_user_no, now_account_no,false);
 		break;
 	case 6:
 		system("cls");
-		Suggestion(now_user_no, now_account_no);
+		inGioHang(now_user_no, now_account_no);
 		break;
 	case 7:
+		system("cls");
+		date_borrow_book(now_user_no, now_account_no);
+		break;
+	case 8:
+		system("cls");
+		Suggestion(now_user_no, now_account_no);
+		break;
+	case 9:
 		system("cls");
 		char Password[max];
 		ChangePassWord(now_user_no, now_account_no, Password);
 		break;
-	case 8:
+	case 10:
 		system("cls");
 		Menu_User(now_user_no, now_account_no);
 		break;
 	}
 }
+
 void Menu_Account_ManageUser(string &now_user_no, string & now_account_no)
 {
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("MENU QUAN LY NGUOI DUNG", MaxCN, indent);
+	VeHang(MaxCN);
+	//Kiem tra thong bao moi cua "Xet duyet yeu cau DK tai khoan"
+	fstream filein;
+	string line;
+	int nu_notice = 0;
+	filein.open("account_signup.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			nu_notice++;
+		}
+	}
+	filein.close();
+	//Kiem tra thong bao moi cua "Xet duyet reset mat khau"
+	filein.open("lost_password.txt", ios::in);
+	int nu_notice2 = 0;
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line.empty())continue;
+		nu_notice2++;
+	}
+	filein.close();
+
+	line = "1. Xet duyet yeu cau dang ky tai khoan.(Co " + to_string(nu_notice) + " thong bao moi)";
+	Text_Menu(line, MaxCN, indent);
+	veDuoi(MaxCN);
+	line = "2. Xet duyet reset mat khau cho tai khoan.(Co " + to_string(nu_notice2) + " yeu cau)";
+	Text_Menu(line, MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("3. Tim kiem va xem danh sach nguoi dung.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("4. Xoa nguoi dung.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("5. Them nguoi dung.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("6. Xem danh sach nguoi dung va tai khoan", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("7. Tim kiem tai khoan.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("8. Xoa tai khoan.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("9. Them tai khoan.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("10. Mo hoac khoa tai khoan.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("11. Doi mat khau.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("12. Tro lai (Dang xuat).", MaxCN, indent);
+	VeHang(MaxCN);
+	CanhLe(MaxKT);	cout << "Lua chon : ";
 	int  Choice;
 	string SChoice;//String Choice 
-	bool Check;
-	do
+	bool Check = true;
+	getline(cin, SChoice);
+	Check = Check_Choice(SChoice, 12);
+	while (Check == false)
 	{
-
-		VeHang(MaxCN);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("MENU ACCOUNT", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("QUAN LY NGUOI DUNG", MaxCN, indent);
-		VeHang(MaxCN);
-
-		fstream filein;
-		string line;
-		int nu_notice = 0;
-		filein.open("account_signup.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				nu_notice++;
-			}
-		}
-		line = "1. Xet duyet yeu cau dang ky tai khoan.( Co" + to_string(nu_notice) + " thong bao moi)";
-		filein.close();
-		Text_Menu(line, MaxCN, indent);
-		Text_Menu("2. Xet duyet reset mat khau cho tai khoan.", MaxCN, indent);
-		Text_Menu("3. Xem danh sach nguoi dung.", MaxCN, indent);
-		Text_Menu("4. Tim kiem nguoi dung.", MaxCN, indent);
-		Text_Menu("5. Xoa nguoi dung.", MaxCN, indent);
-		Text_Menu("6. Them nguoi dung.", MaxCN, indent);
-		Text_Menu("7. Xem danh sach nguoi dung va tai khoan", MaxCN, indent);
-		Text_Menu("8. Tim kiem tai khoan.", MaxCN, indent);
-		Text_Menu("9. Xoa tai khoan.", MaxCN, indent);
-		Text_Menu("10. Them tai khoan.", MaxCN, indent);
-		Text_Menu("11. Mo hoac khoa tai khoan.", MaxCN, indent);
-		Text_Menu("12. Tro lai (Dang xuat).", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
 		getline(cin, SChoice);
-		Check = true;
 		Check = Check_Choice(SChoice, 12);
-		stringstream(SChoice) >> Choice;
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
+	}
+	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
@@ -336,40 +420,45 @@ void Menu_Account_ManageUser(string &now_user_no, string & now_account_no)
 		Review_account(now_user_no, now_account_no);
 		break;
 	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		ResetPassWord(now_user_no, now_account_no);	
 		break;
 	case 3:
 		system("cls");
-		ShowUserList(now_user_no, now_account_no);
-		cout << "Nhap ky tu bat ky de tro tal!!!" << endl;
-		system("pause");
-		system("cls");
-		Search_Role(now_user_no, now_account_no, now_account_no);
+		FindUser(now_user_no, now_account_no);
 		break;
 	case 4:
 		system("cls");
-		FindUser(now_user_no, now_account_no);
+		RemoveUser(now_user_no, now_account_no);
 		break;
 	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		Add_User(now_user_no, now_account_no);
 		break;
 	case 6:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		See_User_Account(now_user_no, now_account_no);
 		break;
 	case 7:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		timKiemTK_TK(now_user_no, now_account_no);		
 		break;
 	case 8:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		xoaTK(now_user_no, now_account_no);
 		break;
 	case 9:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		Them_Tai_Khoan(now_user_no, now_account_no);
 		break;
 	case 10:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		Active_Account(now_user_no, now_account_no);
 		break;
 	case 11:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		char Password[max];
+		ChangePassWord(now_user_no, now_account_no, Password);
 		break;
 	case 12:
 		system("cls");
@@ -379,482 +468,309 @@ void Menu_Account_ManageUser(string &now_user_no, string & now_account_no)
 }
 void Menu_Account_Librarian(string &now_user_no, string & now_account_no)
 {
+	// Xem co bao nhieu thong bao moi ve viec that lac sach
+	fstream file;
+	file.open("suggestion.txt", ios::in);
+	string line;
+	int count = 0;
+	while (!file.eof())
+	{
+		getline(file, line);
+		if (line == "{")
+		{
+			getline(file, line);//Read account_no
+			getline(file, line);//Read idea
+			do
+			{
+				getline(file, line);//Read .
+				getline(file, line);
+				count++;
+			} while (line != "}");
+		}
+	}
+	file.close();
+	string str12 = "9. Giai quyet thong bap that lac sach. (Co " + to_string(count) + " thong bao moi)";
+	
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("MENU THU THU", MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Menu("1. Tim sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("2. Xem sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("3. Them sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("4. Xoa sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("5. Sua thong tin sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("6. Xet duyet yeu cau muon sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("7. Xet duyet yeu cau tra sach.", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("8. Nhung nguoi dung qua han tra sach", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu(str12, MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("10. Doi mat khau", MaxCN, indent);
+	veDuoi(MaxCN);
+	Text_Menu("11. Tro lai (Dang xuat).", MaxCN, indent);
+	VeHang(MaxCN);
+	CanhLe(MaxKT);	cout << "Lua chon : ";
 	int  Choice;
 	string SChoice;//String Choice 
-	bool Check;
-	do
+	bool Check = true;
+	getline(cin, SChoice);
+	Check = Check_Choice(SChoice, 11);
+	while (Check == false)
 	{
-
-		VeHang(MaxCN);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("MENU ACCOUNT", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("THU THU", MaxCN, indent);
-		VeHang(MaxCN);
-
-		Text_Menu("1. Tim sach.", MaxCN, indent);
-		Text_Menu("2. Xem sach.", MaxCN, indent);
-		Text_Menu("3. Chinh sua thong tin sach.", MaxCN, indent);
-		Text_Menu("4. Them sach.", MaxCN, indent);
-		Text_Menu("5. Nhan muon tra sach.", MaxCN, indent);
-		Text_Menu("6. Nhung nguoi dung qua han tra sach", MaxCN, indent);
-		fstream file;
-		file.open("suggestion.txt", ios::in);
-		string line;
-		int count = 0;
-		while (!file.eof())
-		{
-			getline(file, line);
-			if (line == "{")
-			{
-				getline(file, line);//Read account_no
-				getline(file, line);//Read idea
-				do
-				{
-					getline(file, line);//Read .
-					getline(file, line);
-					count++;
-				} while (line != "}");
-			}
-		}
-		file.close();
-		string str12 = "7. Giai viec viec that lac sach. (Co " + to_string(count) + " thong bao moi)";
-		Text_Menu(str12, MaxCN, indent);
-		Text_Menu("8. Tro lai (Dang xuat).", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
 		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 9);
-		stringstream(SChoice) >> Choice;
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
+		Check = Check_Choice(SChoice, 11);
+	}
+	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case 3:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		hamThemSach(now_user_no, now_account_no);
 		break;
 	case 4:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		system("cls");
+		hamXoaSach(now_user_no, now_account_no);
 		break;
 	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		hamSuaSach(now_user_no, now_account_no);
 		break;
 	case 6:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
+		require_select(now_user_no, now_account_no);
 		break;
 	case 7:
+		ghingaytrasach(now_user_no, now_account_no);
+		break;
+	case 8:
+		system("cls");
+		NguoiDung_QuaHanTraSach(now_user_no, now_account_no);
+		break;
+	case 9:
 		system("cls");
 		Resolutions(now_user_no, now_account_no);
 		break;
-	case 8:
+	case 10:
+		system("cls");
+		char Password[max];
+		ChangePassWord(now_user_no, now_account_no, Password);
+		break;
+	case 11:
 		system("cls");
 		Menu_User(now_user_no, now_account_no);
 		break;
 	}
 }
+
+
 void Menu_Account_RM(string & now_user_no, string & now_account_no)
 {
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("MENU ACCOUNT", MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua_No("DOC GIA", MaxCN2, indent);
+	Text_Giua("QUAN LY NGUOI DUNG", MaxCN2, no_indent);
+	VeHang(MaxCN);
+
+	fstream filein;
+	string line;
+	int nu_notice = 0;
+
+	filein.open("notice_account_new.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			getline(filein, line);
+			if (line == now_account_no)
+			{
+				nu_notice++;
+				continue;
+			}
+		}
+	}
+	filein.close();
+
+	string str_notice = to_string(nu_notice);
+	string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
+	Text_Menu_No(str1, MaxCN2, indent);
+	nu_notice = 0;
+
+	filein.open("account_signup.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			nu_notice++;
+		}
+	}
+	filein.close();
+
+	//Kiem tra thong bao moi cua "Xet duyet reset mat khau"
+	filein.open("lost_password.txt", ios::in);
+	int nu_notice2 = 0;
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line.empty())continue;
+		nu_notice2++;
+	}
+	filein.close();
+
+	line = "10. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+	Text_Menu(line, MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	line = "11. Xet duyet reset mat khau tai khoan.(Co " + to_string(nu_notice2) + " )";
+	Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
+	Text_Menu(line, MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("3. Xem sach.", MaxCN2, indent);
+	Text_Menu("12. Tim kiem va xem danh sach nguoi dung.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("4. Tim sach.", MaxCN2, indent);
+	Text_Menu("13. Xoa nguoi dung.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("5. Them sach vao gio hang.", MaxCN2, indent);
+	Text_Menu("14. Them nguoi dung.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("6. Xem va chinh sua gio hang.", MaxCN2, indent);
+	Text_Menu("15. Xem danh sach nguoi dung va tai khoan", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("7. Gui yeu cau muon sach.", MaxCN2, indent);
+	Text_Menu("16. Tim kiem tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("8. Gui thong bao viec that lac sach.", MaxCN2, indent);
+	Text_Menu("17. Xoa tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("9. Doi mat khau.", MaxCN2, indent);
+	Text_Menu("18. Them tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("  ", MaxCN2, indent);
+	Text_Menu("19. Mo hoac khoa tai khoan.", MaxCN2, no_indent);
+
+	VeHang(MaxCN);
+	Text_Giua("20. Tro lai (Dang xuat).", MaxCN, indent);
+	VeHang(MaxCN);
+	CanhLe(MaxKT);	cout << "Lua chon : ";
 	int  Choice;
 	string SChoice;//String Choice 
 	bool Check;
-	do
+	getline(cin, SChoice);
+	Check = true;
+	Check = Check_Choice(SChoice, 20);
+	while (Check == false)
 	{
-		VeHang(MaxCN);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("MENU ACCOUNT", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua_No("DOC GIA", MaxCN2, indent);
-		Text_Giua("QUAN LY NGUOI DUNG", MaxCN2, no_indent);
-		VeHang(MaxCN);
-
-		fstream filein;
-		string line;
-		int nu_notice = 0;
-		filein.open("notice.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				getline(filein, line);
-				if (line == now_account_no)
-				{
-					getline(filein, line);//Read idea
-					do
-					{
-						nu_notice++;
-						getline(filein, line);//Read answer
-						getline(filein, line);//Read .
-						getline(filein, line);
-					} while (line != "}");
-					break;
-				}
-			}
-		}
-		filein.close();
-		string str_notice = to_string(nu_notice);
-		string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
-		Text_Menu_No(str1, MaxCN2, indent);
-		nu_notice = 0;
-		filein.open("account_signup.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				nu_notice++;
-			}
-		}
-		line = "8. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
-		filein.close();
-		Text_Menu(line, MaxCN2, no_indent);
-
-		Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
-		Text_Menu("9. Xet duyet reset mat khau cho tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("3. Tim sach", MaxCN2, indent);
-		Text_Menu("10. Xem danh sach nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("4. Xem sach", MaxCN2, indent);
-		Text_Menu("11. Tim kiem nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("5. Gui yeu cau muon sach", MaxCN2, indent);
-		Text_Menu("12. Xoa nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("6. Gui thong bao viec that lac sach.", MaxCN2, indent);
-		Text_Menu("13. Them nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("7. Doi mat khau.", MaxCN2, indent);
-		Text_Menu("14. Xem danh sach nguoi dung va tai khoan", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("15. Tim kiem tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("16. Xoa tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("17. Them tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("18. Mo hoac khoa tai khoan.", MaxCN2, no_indent);
-
-		VeHang(MaxCN);
-		Text_Giua("19. Tro lai (Dang xuat).", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
 		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 19);
-		stringstream(SChoice) >> Choice;
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
+		Check = Check_Choice(SChoice, 20);
+	}
+	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		Notice_Account(now_user_no, now_account_no);
 		break;
 	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		ThongTin_TaiKhoan(now_user_no, now_account_no);
 		break;
 	case 3:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case 4:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
-		break;
-	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case 6:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		inGioHang(now_user_no, now_account_no);
 		break;
 	case 7:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		date_borrow_book(now_user_no, now_account_no);
 		break;
 	case 8:
+		system("cls");
+		Suggestion(now_user_no, now_account_no);
+		break;
+	case 9:
+		system("cls");
+		char Password[max];
+		ChangePassWord(now_user_no, now_account_no, Password);
+		break;
+	case 10:
 		system("cls");
 		Review_account(now_user_no, now_account_no);
 		break;
-	case 9:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
-		break;
-	case 10:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
-		break;
 	case 11:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		ResetPassWord(now_user_no, now_account_no);
 		break;
 	case 12:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		FindUser(now_user_no, now_account_no);
 		break;
 	case 13:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		RemoveUser(now_user_no, now_account_no);
 		break;
 	case 14:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		Add_User(now_user_no, now_account_no);
 		break;
 	case 15:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		See_User_Account(now_user_no, now_account_no);
 		break;
 	case 16:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		timKiemTK_TK(now_user_no, now_account_no);
 		break;
 	case 17:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		xoaTK(now_user_no, now_account_no);
 		break;
 	case 18:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RM(now_user_no, now_account_no);
+		Them_Tai_Khoan(now_user_no, now_account_no);
 		break;
 	case 19:
 		system("cls");
-		Menu_User(now_user_no, now_account_no);
+		Active_Account(now_user_no, now_account_no);
 		break;
-	}
-}
-void Menu_Account_RL(string & now_user_no, string & now_account_no)
-{
-	int  Choice;
-	string SChoice;//String Choice 
-	bool Check;
-	do
-	{
-		VeHang(MaxCN);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("MENU ACCOUNT", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua_No("DOC GIA", MaxCN2, indent);
-		Text_Giua("THU THU", MaxCN2, no_indent);
-		VeHang(MaxCN);
-
-		fstream filein;
-		string line;
-		int nu_notice = 0;
-		filein.open("notice.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				getline(filein, line);
-				if (line == now_account_no)
-				{
-					getline(filein, line);//Read idea
-					do
-					{
-						nu_notice++;
-						getline(filein, line);//Read answer
-						getline(filein, line);//Read .
-						getline(filein, line);
-					} while (line != "}");
-					break;
-				}
-			}
-		}
-		filein.close();
-		string str_notice = to_string(nu_notice);
-		string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
-		Text_Menu_No(str1, MaxCN2, indent);
-		Text_Menu("8. Tim sach.", MaxCN2, no_indent);
-
-		Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
-		Text_Menu("9. Xem sach.", MaxCN2, no_indent);
-
-		Text_Menu_No("3. Tim sach", MaxCN2, indent);
-		Text_Menu("10. Chinh sua thong tin sach.", MaxCN2, no_indent);
-
-		Text_Menu_No("4. Xem sach", MaxCN2, indent);
-		Text_Menu("11. Them sach.", MaxCN2, no_indent);
-
-		Text_Menu_No("5. Gui yeu cau muon sach", MaxCN2, indent);
-		Text_Menu("12. Nhan muon tra sach.", MaxCN2, no_indent);
-
-		Text_Menu_No("6. Gui thong bao viec that lac sach.", MaxCN2, indent);
-		Text_Menu("13. Nhung nguoi dung qua han tra sach", MaxCN2, no_indent);
-
-		Text_Menu_No("7. Doi mat khau.", MaxCN2, indent);
-		Text_Menu("14. Giai quyet viec that lac sach.", MaxCN2, no_indent);
-
-
-		VeHang(MaxCN);
-		Text_Giua("15. Tro lai (Dang xuat).", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
-		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 15);
-		stringstream(SChoice) >> Choice;
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
-	switch (Choice)
-	{
-	case 1:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 3:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 4:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 6:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 7:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 8:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 9:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 10:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 11:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 12:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 13:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 14:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RL(now_user_no, now_account_no);
-		break;
-	case 15:
+	case 20:
 		system("cls");
 		Menu_User(now_user_no, now_account_no);
 		break;
@@ -862,193 +778,379 @@ void Menu_Account_RL(string & now_user_no, string & now_account_no)
 }
 void Menu_Account_ML(string & now_user_no, string & now_account_no)
 {
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("MENU ACCOUNT", MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua_No("QUAN LY NGUOI DUNG", MaxCN2, indent);
+	Text_Giua("THU THU", MaxCN2, no_indent);
+	VeHang(MaxCN);
+
+	fstream filein;
+	string line;
+	int nu_notice = 0;
+	filein.open("account_signup.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			nu_notice++;
+		}
+	}
+	filein.close();
+	filein.open("lost_password.txt", ios::in);
+	int nu_notice2 = 0;
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line.empty())continue;
+		nu_notice2++;
+	}
+	filein.close();
+
+
+
+	line = "1. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+	Text_Menu_No(line, MaxCN2, indent);
+	Text_Menu("11. Tim sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	line = "2. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+	Text_Menu_No(line, MaxCN2, indent);
+	Text_Menu("12. Xem sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("3. Tim kiem va xem danh sach nguoi dung.", MaxCN2, indent);
+	Text_Menu("13. Them sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("4. Xoa nguoi dung.", MaxCN2, indent);
+	Text_Menu("14. Xoa sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("5. Them nguoi dung.", MaxCN2, indent);
+	Text_Menu("15. Sua thong tin sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("6. Xem danh sach nguoi dung va tai khoan.", MaxCN2, indent);
+	Text_Menu("16. Xet duyet yeu cau muon sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("7. Tim kiem tai khoan.", MaxCN2, indent);
+	Text_Menu("17. Xet duyet yeu cau tra sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("8. Xoa tai khoan.", MaxCN2, indent);
+	Text_Menu("18. Nhung nguoi dung qua han tra sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	fstream file;
+	file.open("suggestion.txt", ios::in);
+	int count = 0;
+	while (!file.eof())
+	{
+		getline(file, line);
+		if (line == "{")
+		{
+			getline(file, line);//Read account_no
+			getline(file, line);//Read idea
+			do
+			{
+				getline(file, line);//Read .
+				getline(file, line);
+				count++;
+			} while (line != "}");
+		}
+	}
+	file.close();
+	line = "19. Giai quyet thong bap that lac sach. (Co " + to_string(count)+")";
+	Text_Menu_No("9. Them tai khoan.", MaxCN2, indent);
+	Text_Menu(line, MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("10. Mo hoac khoa tai khoan ", MaxCN2, indent);
+	Text_Menu("20. Doi mat khau ", MaxCN2, no_indent);
+
+	VeHang(MaxCN);
+	Text_Giua("21. Tro lai (Dang xuat).", MaxCN, indent);
+	VeHang(MaxCN);
+	CanhLe(MaxKT);	cout << "Lua chon : ";
 	int  Choice;
 	string SChoice;//String Choice 
 	bool Check;
-	do
+	getline(cin, SChoice);
+	Check = true;
+	Check = Check_Choice(SChoice, 21);
+	while (Check == false)
 	{
-		VeHang(MaxCN);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua("MENU ACCOUNT", MaxCN, indent);
-		VeHang(MaxCN);
-		Text_Giua_No("THU THU", MaxCN2, indent);
-		Text_Giua("QUAN LY NGUOI DUNG", MaxCN2, no_indent);
-		VeHang(MaxCN);
-
-		fstream filein;
-		string line;
-		int nu_notice = 0;
-		filein.open("account_signup.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				nu_notice++;
-			}
-		}
-		line = "8. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
-
-		filein.close();
-		Text_Menu_No("1. Tim sach.", MaxCN2, indent);
-		Text_Menu(line, MaxCN2, no_indent);
-
-		Text_Menu_No("2. Xem sach.", MaxCN2, indent);
-		Text_Menu("9. Xet duyet reset mat khau cho tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("3. Chinh sua thong tin sach.", MaxCN2, indent);
-		Text_Menu("10. Xem danh sach nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("4. Them sach.", MaxCN2, indent);
-		Text_Menu("11. Tim kiem nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("5. Nhan muon tra sach.", MaxCN2, indent);
-		Text_Menu("12. Xoa nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("6. Nhung nguoi dung qua han tra sach", MaxCN2, indent);
-		Text_Menu("13. Them nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("7. Giai quyet viec that lac sach.", MaxCN2, indent);
-		Text_Menu("14. Xem danh sach nguoi dung va tai khoan", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("15. Tim kiem tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("16. Xoa tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("17. Them tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu("18. Mo hoac khoa tai khoan.", MaxCN2, no_indent);
-
-
-		VeHang(MaxCN);
-		Text_Giua("19. Tro lai (Dang xuat).", MaxCN, indent);
-		VeHang(MaxCN);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
 		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 19);
-		stringstream(SChoice) >> Choice;
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
+		Check = Check_Choice(SChoice, 21);
+	}
+	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 3:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 4:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 6:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 7:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
-		break;
-	case 8:
 		system("cls");
 		Review_account(now_user_no, now_account_no);
 		break;
-	case 9:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
+	case 2:
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		ResetPassWord(now_user_no, now_account_no);
+		break;
+	case 3:
+		system("cls");
+		FindUser(now_user_no, now_account_no);
+		break;
+	case 4:
+		system("cls");
+		RemoveUser(now_user_no, now_account_no);
+		break;
+	case 5:
+		system("cls");
+		Add_User(now_user_no, now_account_no);
+		break;
+	case 6:
+		system("cls");
+		See_User_Account(now_user_no, now_account_no);
+		break;
+	case 7:
+		system("cls");
+		timKiemTK_TK(now_user_no, now_account_no);
+		break;
+	case 8:
+		system("cls");
+		xoaTK(now_user_no, now_account_no);
+		break;
+	case 9:
+		system("cls");
+		Them_Tai_Khoan(now_user_no, now_account_no);
 		break;
 	case 10:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		Active_Account(now_user_no, now_account_no);
 		break;
+		//Tinh nang THU THU
 	case 11:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case 12:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case 13:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		hamThemSach(now_user_no, now_account_no);
 		break;
 	case 14:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		hamXoaSach(now_user_no, now_account_no);
 		break;
 	case 15:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		hamSuaSach(now_user_no, now_account_no);
 		break;
 	case 16:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		require_select(now_user_no, now_account_no);
 		break;
 	case 17:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		ghingaytrasach(now_user_no, now_account_no);
 		break;
 	case 18:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_ML(now_user_no, now_account_no);
+		NguoiDung_QuaHanTraSach(now_user_no, now_account_no);
+		break;
+	case 19:
+		system("cls");
+		Resolutions(now_user_no, now_account_no);
+		break;
+	case 20:
+		system("cls");
+		char Password[max];
+		ChangePassWord(now_user_no, now_account_no, Password);
+		break;
+	case 21:
+		system("cls");
+		Menu_User(now_user_no, now_account_no);
+		break;
+	}
+}
+
+
+void Menu_Account_RL(string & now_user_no, string & now_account_no)
+{
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("MENU ACCOUNT", MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua_No("DOC GIA", MaxCN2, indent);
+	Text_Giua("THU THU", MaxCN2, no_indent);
+	VeHang(MaxCN);
+
+	fstream filein;
+	string line;
+	int nu_notice = 0;
+
+	filein.open("notice_account_new.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			getline(filein, line);
+			if (line == now_account_no)
+			{
+				nu_notice++;
+				continue;
+			}
+		}
+	}
+	filein.close();
+
+	string str_notice = to_string(nu_notice);
+	string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
+	Text_Menu_No(str1, MaxCN2, indent);
+	Text_Menu("10. Tim sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
+	Text_Menu("11. Xem sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("3. Xem sach.", MaxCN2, indent);
+	Text_Menu("12. Them sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("4. Tim sach.", MaxCN2, indent);
+	Text_Menu("13. Xoa sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("5. Them sach vao gio hang.", MaxCN2, indent);
+	Text_Menu("14. Sua thong tin sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("6. Xem va chinh sua gio hang.", MaxCN2, indent);
+	Text_Menu("15. Xet duyet yeu cau muon sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("7. Gui yeu cau muon sach.", MaxCN2, indent);
+	Text_Menu("16. Xet duyet yeu cau tra sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	Text_Menu_No("8. Gui thong bao viec that lac sach.", MaxCN2, indent);
+	Text_Menu("17. Nhung nguoi dung qua han tra sach.", MaxCN2, no_indent);
+	veDuoi(MaxCN);
+
+	fstream file;
+	file.open("suggestion.txt", ios::in);
+	int count = 0;
+	while (!file.eof())
+	{
+		getline(file, line);
+		if (line == "{")
+		{
+			getline(file, line);//Read account_no
+			getline(file, line);//Read idea
+			do
+			{
+				getline(file, line);//Read .
+				getline(file, line);
+				count++;
+			} while (line != "}");
+		}
+	}
+	file.close();
+	line = "18. Giai quyet thong bap that lac sach. (Co " + to_string(count) + ")";
+	Text_Menu_No("9. Doi mat khau.", MaxCN2, indent);
+	Text_Menu(line, MaxCN2, no_indent);
+
+	VeHang(MaxCN);
+	Text_Giua("19. Tro lai (Dang xuat).", MaxCN, indent);
+	VeHang(MaxCN);
+	CanhLe(MaxKT);	cout << "Lua chon : ";
+	int  Choice;
+	string SChoice;//String Choice 
+	bool Check;
+	getline(cin, SChoice);
+	Check = true;
+	Check = Check_Choice(SChoice, 19);
+	while (Check == false)
+	{
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
+		getline(cin, SChoice);
+		Check = Check_Choice(SChoice, 19);
+	}
+	stringstream(SChoice) >> Choice;
+	switch (Choice)
+	{
+	case 1:
+		system("cls");
+		Notice_Account(now_user_no, now_account_no);
+		break;
+	case 2:
+		system("cls");
+		ThongTin_TaiKhoan(now_user_no, now_account_no);
+		break;
+	case 3:
+		system("cls");
+		hamXemSach(now_user_no, now_account_no);
+		break;
+	case 4:
+		system("cls");
+		TimSach_NangCao(now_user_no, now_account_no);
+		break;
+	case 6:
+		system("cls");
+		inGioHang(now_user_no, now_account_no);
+		break;
+	case 7:
+		system("cls");
+		date_borrow_book(now_user_no, now_account_no);
+		break;
+	case 8:
+		system("cls");
+		Suggestion(now_user_no, now_account_no);
+		break;
+	case 9:
+		system("cls");
+		char Password[max];
+		ChangePassWord(now_user_no, now_account_no, Password);
+		break;
+	case 10:
+		system("cls");
+		TimSach_NangCao(now_user_no, now_account_no);
+		break;
+	case 11:
+		system("cls");
+		hamXemSach(now_user_no, now_account_no);
+		break;
+	case 12:
+		hamThemSach(now_user_no, now_account_no);
+		break;
+	case 13:
+		system("cls");
+		hamXoaSach(now_user_no, now_account_no);
+		break;
+	case 14:
+		hamSuaSach(now_user_no, now_account_no);
+		break;
+	case 15:
+		require_select(now_user_no, now_account_no);
+		break;
+	case 16:
+		ghingaytrasach(now_user_no, now_account_no);
+		break;
+	case 17:
+		system("cls");
+		NguoiDung_QuaHanTraSach(now_user_no, now_account_no);
+		break;
+	case 18:
+		system("cls");
+		Resolutions(now_user_no, now_account_no);
 		break;
 	case 19:
 		system("cls");
@@ -1056,275 +1158,265 @@ void Menu_Account_ML(string & now_user_no, string & now_account_no)
 		break;
 	}
 }
+
+
+
 void Menu_Account_RML(string & now_user_no, string & now_account_no)
 {
+	VeHang(MaxCN3);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN3, indent);
+	VeHang(MaxCN3);
+	Text_Giua("MENU ACCOUNT", MaxCN3, indent);
+	VeHang(MaxCN3);
+	Text_Giua_No("DOC GIA", MaxCN2, indent);
+	Text_Giua_No("THU THU", MaxCN2, no_indent);
+	Text_Giua("QUAN LY NGUOI DUNG", MaxCN2, no_indent);
+	VeHang(MaxCN3);
+
+	fstream filein;
+	string line;
+	int nu_notice = 0;
+	filein.open("notice_account_new.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			getline(filein, line);
+			if (line == now_account_no)
+			{
+				nu_notice++;
+				continue;
+			}
+		}
+	}
+	filein.close();
+	string str1 = "1. Xem thong bao. (Co " + to_string(nu_notice) + " thong bao moi.)";
+	filein.close();
+
+	Text_Menu_No(str1, MaxCN2, indent);
+	Text_Menu_No("10. Tim sach.", MaxCN2, no_indent);
+	nu_notice = 0;
+	filein.open("account_signup.txt", ios::in);
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line == "{")
+		{
+			nu_notice++;
+		}
+	}
+	//Kiem tra thong bao moi cua "Xet duyet reset mat khau"
+	filein.open("lost_password.txt", ios::in);
+	int nu_notice2 = 0;
+	while (!filein.eof())
+	{
+		getline(filein, line);
+		if (line.empty())continue;
+		nu_notice2++;
+	}
+	filein.close();
+
+	line = "19. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
+	filein.close();
+	Text_Menu(line, MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	line = "20. Xet duyet reset mat khau tai khoan.(Co " + to_string(nu_notice2) + ")";
+	Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
+	Text_Menu_No("11. Xem sach.", MaxCN2, no_indent);
+	Text_Menu(line, MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("3. Xem sach", MaxCN2, indent);
+	Text_Menu_No("12. Them sach.", MaxCN2, no_indent);
+	Text_Menu("21. Tim kiem va xem danh sach nguoi dung.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("4. Tim sach", MaxCN2, indent);
+	Text_Menu_No("13. Xoa sach.", MaxCN2, no_indent);
+	Text_Menu("22. Xoa nguoi dung.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("5. Them vao gio hang.", MaxCN2, indent);
+	Text_Menu_No("14. Sua thong tin sach.", MaxCN2, no_indent);
+	Text_Menu("23. Them nguoi dung.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("6. Xem va chinh sua gio hang.", MaxCN2, indent);
+	Text_Menu_No("15. Xet duyet yeu cau muon sach", MaxCN2, no_indent);
+	Text_Menu("24. Xem danh sach nguoi dung va tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("7. Gui yeu cau muon sach.", MaxCN2, indent);
+	Text_Menu_No("16. Xet  duyet yeu cau tra sach.", MaxCN2, no_indent);
+	Text_Menu("25. Tim kiem tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("8. Gui thong bao viec that lac sach.  ", MaxCN2, indent);
+	Text_Menu_No("17. Nguoi dung qua han tra sach. ", MaxCN2, no_indent);
+	Text_Menu("26. Xoa tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	fstream file;
+	file.open("suggestion.txt", ios::in);
+	int count = 0;
+	while (!file.eof())
+	{
+		getline(file, line);
+		if (line == "{")
+		{
+			getline(file, line);//Read account_no
+			getline(file, line);//Read idea
+			do
+			{
+				getline(file, line);//Read .
+				getline(file, line);
+				count++;
+			} while (line != "}");
+		}
+	}
+	file.close();
+	line = "18. Giai quyet thong bap that lac sach. (Co " + to_string(count) + ")";
+	Text_Menu_No("9. Doi mat khau. ", MaxCN2, indent);
+	Text_Menu_No(line, MaxCN2, no_indent);
+	Text_Menu("27. Them tai khoan.", MaxCN2, no_indent);
+	veDuoi(MaxCN3);
+
+	Text_Menu_No("  ", MaxCN2, indent);
+	Text_Menu_No("  ", MaxCN2, no_indent);
+	Text_Menu("28. Mo hoac khoa tai khoan.", MaxCN2, no_indent);
+
+	VeHang(MaxCN3);
+	Text_Giua("29. Tro lai (Dang xuat).", MaxCN3, indent);
+	VeHang(MaxCN3);
+	CanhLe(MaxKT);	cout << "Lua chon: ";
 	int  Choice;
 	string SChoice;//String Choice 
 	bool Check;
-	do
+	getline(cin, SChoice);
+	Check = true;
+	Check = Check_Choice(SChoice, 29);
+	while (Check == false)
 	{
-		VeHang(MaxCN3);
-		string str = "Xin chao " + now_account_no + " !!!";
-		Text_Giua(str, MaxCN3, indent);
-		VeHang(MaxCN3);
-		Text_Giua("MENU ACCOUNT", MaxCN3, indent);
-		VeHang(MaxCN3);
-		Text_Giua_No("DOC GIA", MaxCN2, indent);
-		Text_Giua_No("THU THU", MaxCN2, no_indent);
-		Text_Giua("QUAN LY NGUOI DUNG", MaxCN2, no_indent);
-		VeHang(MaxCN3);
-
-		fstream filein;
-		string line;
-		int nu_notice = 0;
-		filein.open("notice.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				getline(filein, line);
-				if (line == now_account_no)
-				{
-					getline(filein, line);//Read idea
-					do
-					{
-						nu_notice++;
-						getline(filein, line);//Read answer
-						getline(filein, line);//Read .
-						getline(filein, line);
-					} while (line != "}");
-					break;
-				}
-			}
-		}
-		filein.close();
-		string str_notice = to_string(nu_notice);
-		string str1 = "1. Xem thong bao. (Co " + str_notice + " thong bao moi.)";
-		Text_Menu_No(str1, MaxCN2, indent);
-		Text_Menu_No("8. Tim sach.", MaxCN2, no_indent);
-		 nu_notice = 0;
-		filein.open("account_signup.txt", ios::in);
-		while (!filein.eof())
-		{
-			getline(filein, line);
-			if (line == "{")
-			{
-				nu_notice++;
-			}
-		}
-		
-		line = "15. Xet duyet yeu cau dang ky tai khoan.( Co " + to_string(nu_notice) + ")";
-		filein.close();
-		Text_Menu(line, MaxCN2, no_indent);
-
-		Text_Menu_No("2. Xem thong tin.", MaxCN2, indent);
-		Text_Menu_No("9. Xem sach.", MaxCN2, no_indent);
-		Text_Menu("16. Xet duyet reset mat khau cho tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("3. Tim sach", MaxCN2, indent);
-		Text_Menu_No("10. Chinh sua thong tin sach.", MaxCN2, no_indent);
-		Text_Menu("17. Xem danh sach nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("4. Xem sach", MaxCN2, indent);
-		Text_Menu_No("11. Them sach.", MaxCN2, no_indent);
-		Text_Menu("18. Tim kiem nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("5. Gui yeu cau muon sach", MaxCN2, indent);
-		Text_Menu_No("12. Nhan muon tra sach.", MaxCN2, no_indent);
-		Text_Menu("19. Xoa nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("6. Gui thong bao viec that lac sach.", MaxCN2, indent);
-		Text_Menu_No("13. Nhung nguoi dung qua han tra sach", MaxCN2, no_indent);
-		Text_Menu("20. Them nguoi dung.", MaxCN2, no_indent);
-
-		Text_Menu_No("7. Doi mat khau.", MaxCN2, indent);
-		Text_Menu_No("14. Giai quyet viec that lac sach.", MaxCN2, no_indent);
-		Text_Menu("21. Xem danh sach nguoi dung va tai khoan", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu_No("  ", MaxCN2, no_indent);
-		Text_Menu("22. Tim kiem tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu_No("  ", MaxCN2, no_indent);
-		Text_Menu("23. Xoa tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu_No("  ", MaxCN2, no_indent);
-		Text_Menu("24. Them tai khoan.", MaxCN2, no_indent);
-
-		Text_Menu_No("  ", MaxCN2, indent);
-		Text_Menu_No("  ", MaxCN2, no_indent);
-		Text_Menu("25. Mo hoac khoa tai khoan.", MaxCN2, no_indent);
-
-		VeHang(MaxCN3);
-		Text_Giua("26. Tro lai (Dang xuat).", MaxCN3, indent);
-		VeHang(MaxCN3);
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
 		getline(cin, SChoice);
-		Check = true;
-		Check = Check_Choice(SChoice, 26);
-		if (Check == false)
-		{
-			cout << setw(MaxKT) << right << " " << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
-		}
-	} while (Check == false);
+		Check = Check_Choice(SChoice, 29);
+	}
 	stringstream(SChoice) >> Choice;
 	switch (Choice)
 	{
 	case 1:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		Notice_Account(now_user_no, now_account_no);
 		break;
 	case 2:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		ThongTin_TaiKhoan(now_user_no, now_account_no);
 		break;
 	case 3:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case 4:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case 5:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		themVaoGioHang(now_user_no, now_account_no, false);
 		break;
 	case 6:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		inGioHang(now_user_no, now_account_no);
 		break;
 	case 7:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		date_borrow_book(now_user_no, now_account_no);
 		break;
 	case 8:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		Suggestion(now_user_no, now_account_no);
 		break;
 	case 9:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		char Password[max];
+		ChangePassWord(now_user_no, now_account_no, Password);
 		break;
 	case 10:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		TimSach_NangCao(now_user_no, now_account_no);
 		break;
 	case 11:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		hamXemSach(now_user_no, now_account_no);
 		break;
 	case 12:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		hamThemSach(now_user_no, now_account_no);
 		break;
 	case 13:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		hamXoaSach(now_user_no, now_account_no);
 		break;
 	case 14:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		hamSuaSach(now_user_no, now_account_no);
 		break;
 	case 15:
+		require_select(now_user_no, now_account_no);
+		break;
+	case 16:
+		ghingaytrasach(now_user_no, now_account_no);
+		break;
+	case 17:
+		system("cls");
+		NguoiDung_QuaHanTraSach(now_user_no, now_account_no);
+		break;
+	case 18:
+		system("cls");
+		Resolutions(now_user_no, now_account_no);
+		break;
+	case 19:
 		system("cls");
 		Review_account(now_user_no, now_account_no);
 		break;
-	case 16:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
-		break;
-	case 17:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
-		break;
-	case 18:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
-		break;
-	case 19:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
-		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
-		break;
 	case 20:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		ResetPassWord(now_user_no, now_account_no);
 		break;
 	case 21:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		FindUser(now_user_no, now_account_no);
 		break;
 	case 22:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		RemoveUser(now_user_no, now_account_no);
 		break;
 	case 23:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		Add_User(now_user_no, now_account_no);
 		break;
 	case 24:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		See_User_Account(now_user_no, now_account_no);
 		break;
 	case 25:
-		CanhLe(MaxKT);	cout << "Chua cap nhat" << endl;
-		system("pause");
 		system("cls");
-		Menu_Account_RML(now_user_no, now_account_no);
+		timKiemTK_TK(now_user_no, now_account_no);
 		break;
 	case 26:
+		system("cls");
+		xoaTK(now_user_no, now_account_no);
+		break;
+	case 27:
+		system("cls");
+		Them_Tai_Khoan(now_user_no, now_account_no);
+		break;
+	case 28:
+		system("cls");
+		Active_Account(now_user_no, now_account_no);
+		break;
+	case 29:
 		system("cls");
 		Menu_User(now_user_no, now_account_no);
 		break;

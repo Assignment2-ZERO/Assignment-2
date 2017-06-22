@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GioHang.cpp" />
+    <ClCompile Include="Muon_ChapNhanMuon_TraSACH.cpp" />
     <ClCompile Include="Password.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="LIBPRO.cpp" />
@@ -26,12 +28,17 @@
     <ClCompile Include="Notice.cpp" />
     <ClCompile Include="Review_SignUpAccount.cpp" />
     <ClCompile Include="Search_See_DeleteUSER.cpp" />
+    <ClCompile Include="See_Search_Delete_AddACCOUNT.cpp" />
     <ClCompile Include="Sign_In_Up_Account.cpp" />
     <ClCompile Include="Sign_In_Up_User.cpp" />
     <ClCompile Include="Suggestion_Resolution.cpp" />
+    <ClCompile Include="Xem_Sua_Xoa_ThemSACH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class.h" />
+    <ClInclude Include="GioHang.h" />
+    <ClInclude Include="MuonTraSACH.h" />
+    <ClInclude Include="See_Search_Delete_AddACCOUNT.h" />
     <ClInclude Include="Password.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Notice.h" />
@@ -41,6 +48,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Sign_In_Up_Account.h" />
     <ClInclude Include="Sign_In_Up_User.h" />
+    <ClInclude Include="Xem_Sua_Xoa_ThemSACH.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

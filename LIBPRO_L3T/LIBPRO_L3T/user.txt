@@ -1,46 +1,22 @@
 {
 zero
-0
+0000
 1613166
 22-07-1997
 Sinh Vien
 1613166@hcmut.edu.vn
 }
 {
-zero
-1
-1613167
-10-23-2014
-sinh vien
-minh@gmail.com
-}
-{
-zero
-2
-123123
-16-18-1223
-12
-as@gmail.com
-}
-{
 caoluong
-3
+0001
 123456
 12-12-2014
 sinh vien
 aa@hcmut.edu.vn
 }
 {
-ducthanh
-4
-12345
-12-45-2014
-sinh vien
-minhtham@hcmut.edu.vn
-}
-{
 minhtham
-5
+0003
 12312
 12-12-2016
 sinh vien

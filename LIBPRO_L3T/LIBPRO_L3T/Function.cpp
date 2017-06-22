@@ -1,12 +1,18 @@
-﻿#include <iostream>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <time.h>
+#include <iostream>
 #include <iomanip>
 #include <sstream>
 #include "Function.h"
 #include <fstream>
 #include <string>
 #include"Menu.h"
+#include <vector>
 using namespace std;
 #define MaxKT 10 //Max Khoang Trang
+#define MaxTK 50
+#define MaxCN 50 //Max Cot Ngang
+
 enum INDENT { indent, no_indent };
 enum Role_Account { DOC_GIA = 1, QUAN_LY_NGUOI_DUNG, THU_THU, DG_QLND, DG_TT, QLND_TT, DG_QLND_TT };
 
@@ -63,11 +69,12 @@ void CanhLe(int Max)
 void VeHang(int SoKyTu)
 {
 	CanhLe(MaxKT);
-	for (int i = 0; i < SoKyTu; i++)
+	cout << "+";
+	for (int i = 0; i < SoKyTu - 2; i++)
 	{
 		cout << "~";
 	}
-	cout << "\n";
+	cout << "+\n";
 }
 
 //Ghi dòng chữ chính giữa hàng
@@ -242,4 +249,263 @@ bool Check_Date(string str)
 		}
 	}
 	return Check;
+}
+void fix_string(string &a, string b)
+{
+	a = "\0";
+	while (a.empty())
+	{
+		CanhLe(MaxKT); cout << b ;
+		char str[MaxTK];
+		if (fgets(str, MaxTK, stdin)) {};
+		a = str;
+		str[a.length() - 1] = '\0';
+		a = str;
+	}
+}
+void veDuoi(int SoKyTu)
+{
+	CanhLe(MaxKT);
+	cout << "+";
+	for (int i = 0; i < SoKyTu - 2; i++)
+	{
+		cout << "-";
+	}
+	cout << "+\n";
+}
+void inSach(const string& data)// sau này có thể tách ra thành hàm riêng dùng chung cho xem sách trong ThuThu.cpp
+{
+	//const char* chuyen = data.c_str();
+	//const int leng = data.length();
+	//char sach[leng]; strcpy(sach, chuyen);
+
+	vector<char> sach(data.begin(), data.end());
+
+	int index = 0;
+	int width = 0;
+	CanhLe(MaxKT);
+	cout << "|";
+	int khtrang = 0;
+	for (unsigned i = 0; i < data.length(); i++)
+	{
+		if (sach[i] == ';') {
+			if (index == 0)
+			{
+				cout << setw(7 - width) << " ";
+				khtrang += 7 - width;
+			}
+			if (index == 1)
+			{
+				cout << setw(30 - width) << " ";
+				khtrang += 30 - width;
+			}
+			if (index == 2)
+			{
+				cout << setw(25 - width) << " ";
+				khtrang += 20 - width;
+			}
+			width = 0;
+			index++;
+		}
+		else
+		{
+			cout << sach[i];
+			width++;
+		}
+	}
+	cout << setw(MaxCN + 37 - data.length() - khtrang) << "|" << endl;
+}
+void Text_(string str)
+{
+	CanhLe(MaxKT);
+	cout << "|" << str;
+}
+Date Now()
+{
+	time_t Time = time(0);
+	// Khởi tạo con trỏ Now lấy giá trị thời gian từ Time
+	struct tm * Now;// Cấu trúc riêng của hàm time
+	Now = localtime(&Time);
+	Date date;
+	date.year = Now->tm_year + 1900;
+	date.month = Now->tm_mon + 1;
+	date.day = Now->tm_mday;
+	return date;
+}
+string Now_String(Date date)
+{
+	int Nu_date, Nu_month, Nu_year;
+	Nu_date = date.day;
+	Nu_month = date.month;
+	Nu_year = date.year;
+	string end_date;
+	if (Nu_date < 10 && Nu_month < 10)
+	{
+		end_date = "0" + to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = "0" + to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	else if (Nu_date < 10)
+	{
+		end_date = "0" + to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = "0" + to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	else if (Nu_month < 10)
+	{
+		end_date = to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	else
+	{
+		end_date = to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	return end_date;
+}
+Date Chuyen(string str)
+{
+	Date date;
+	string day = str.substr(0, 2);
+	string month = str.substr(3, 2);
+	string year = str.substr(6, 4);
+	stringstream(day) >> date.day;
+	stringstream(month) >> date.month;
+	stringstream(year) >> date.year;
+	return date;
+	
+}
+bool SoSanh_Ngay(Date date1, Date date2)//So sanh date 2 lon hon hoac bang date 1 khong
+{
+	if (date1.year > date2.year) return false;
+	else if (date1.year < date2.year) return true;
+	else if (date1.year == date2.year)
+	{
+		if (date1.month > date2.month) return false;
+		else if (date1.month < date2.month) return true;
+		else if (date1.month == date2.month)
+		{
+			if (date1.day > date2.day) return false;
+			else if (date1.day < date2.day) return true;
+			else return true;
+		}
+	}
+}
+bool SoSanh_NgayBangNhau(Date date1, Date date2)//So sanh date 2 lon hon hoac bang date 1 khong
+{
+	if (date1.year > date2.year) return false;
+	else if (date1.year < date2.year) return false;
+	else if (date1.year == date2.year)
+	{
+		if (date1.month > date2.month) return false;
+		else if (date1.month < date2.month) return false;
+		else if (date1.month == date2.month)
+		{
+			if (date1.day > date2.day) return false;
+			else if (date1.day < date2.day) return false;
+			else return true;
+		}
+	}
+}
+string Cong_Ngay(int cong, string start_date)
+{
+	int Nu_date, Nu_month, Nu_year;
+	Date date = Chuyen(start_date);
+	Nu_date = date.day;
+	Nu_month = date.month;
+	Nu_year = date.year;
+cont:
+	if ((Nu_year % 4 == 0 && Nu_year % 100 != 0) || Nu_year % 400 == 0)
+	{
+		int End_Date[12] = { 31,29,31,30,31,30,31,31,30,31,30,31 };
+		int Arr_Month[12] = { 1,2,3,4,5,6,7,8,9,10,11,12 };
+		for (int i = 0; i < 12; i++)
+		{
+			if (Arr_Month[i] == Nu_month)
+			{
+				while (cong > 0)
+				{
+					if (Nu_date == End_Date[i])
+					{
+						if (Nu_month == 12)
+						{
+							cong -= 1;
+							Nu_date = 1;
+							Nu_month = 1;
+							Nu_year += 1;
+							goto cont;
+						}
+						else
+						{
+							cong -= 1;
+							Nu_date = 1;
+							Nu_month += 1;
+						}
+					}
+					else
+					{
+						cong -= 1;
+						Nu_date += 1;
+					}
+				}
+			}
+		}
+	}
+	// nam khong nhuan
+	else
+	{
+		int End_Date[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+		int Arr_Month[12] = { 1,2,3,4,5,6,7,8,9,10,11,12 };
+		for (int i = 0; i < 12; i++)
+		{
+			if (Arr_Month[i] == Nu_month)
+			{
+				while (cong > 0)
+				{
+					if (Nu_date == End_Date[i])
+					{
+						if (Nu_month == 12)
+						{
+							cong -= 1;
+							Nu_date = 1;
+							Nu_month = 1;
+							Nu_year += 1;
+							goto cont;
+						}
+						else
+						{
+							cong -= 1;
+							Nu_date = 1;
+							Nu_month += 1;
+						}
+					}
+					else
+					{
+						cong -= 1;
+						Nu_date += 1;
+					}
+				}
+			}
+		}
+	}
+	string end_date;
+	if (Nu_date < 10 && Nu_month < 10)
+	{
+		end_date = "0" + to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = "0" + to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	else if (Nu_date < 10)
+	{
+		end_date = "0" + to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = "0" + to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	else if (Nu_month < 10)
+	{
+		end_date = to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = to_string(Nu_date) + "-0" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	else
+	{
+		end_date = to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+		end_date = to_string(Nu_date) + "-" + to_string(Nu_month) + "-" + to_string(Nu_year);
+	}
+	return end_date;
 }

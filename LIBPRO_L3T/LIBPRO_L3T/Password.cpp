@@ -166,8 +166,6 @@ void CheckPassWord(string & now_user_no, string & now_account_no, string &PassWo
 			Search_Role(now_user_no, now_account_no, now_account_no);
 		}
 	}
-
-
 }
 
 // Hàm đổi mật khẩu
@@ -205,4 +203,164 @@ void ChangePassWord(string & now_user_no, string & now_account_no ,char Password
 		}
 	}
 	filein.close();
+}
+
+void ResetPassWord(string&now_user_no, string & now_account_no)
+{
+	
+	VeHang(MaxCN);
+	string str = "Xin chao " + now_account_no + " !!!";
+	Text_Giua(str, MaxCN, indent);
+	VeHang(MaxCN);
+	Text_Giua("CAC TAI KHOAN YEU CAU RESET MAT KHAU", MaxCN, indent);
+	VeHang(MaxCN);
+	int nu = 1;
+	fstream file;
+	file.open("lost_password.txt", ios::in);
+	string line, account_no;
+	string *account = new string[1000];
+	while (!file.eof())
+	{
+		getline(file, line);
+		if (line.empty())continue;
+		account[nu - 1] = line;
+		CanhLe(MaxKT);
+		cout << nu << ". " << setw(50) << left << line << endl;
+		nu++;
+	}
+	file.close();
+	CanhLe(MaxKT); cout << "Ban muon reset mat khau cho tai khoan : ";
+	getline(cin, account_no);
+	bool check_account = false;//Nhap tai khoan khong ton tai trong file
+	for (int i = 0; i < nu - 1; i++)
+	{
+		if (account_no == account[i])
+		{
+			check_account = true;
+			char NewPassWord1[max];
+			char NewPassWord2[max];
+			CanhLe(MaxKT);
+			cout << setw(kc) << left << "Nhap mat khau moi :";
+			EncodePassWord(NewPassWord1); cout << endl;           //gọi lại hàm MÃ Hóa MK để mã hóa cho MK mới
+			string NewPassword1(NewPassWord1);           //chuyển chuỗi mk vừa nhập thành 1 string tên NewPassword1
+			CanhLe(MaxKT);
+			cout << setw(kc) << left << "Xac nhan lai mat khau moi :";
+			EncodePassWord(NewPassWord2); cout << endl;
+			string NewPassword2(NewPassWord2);
+			if (NewPassword2 == NewPassword1)
+			{
+				ReplacePassWordInSystem(account_no, NewPassword1); //Gọi hàm thay thế 1 string trong chuỗi để thay thế mk 
+				fstream filein, fileout;
+				filein.open("lost_password.txt", ios::in);
+				fileout.open("replace.txt", ios::out);
+				while (!filein.eof())
+				{
+					getline(filein, line);
+					if (line.empty())continue;
+					if (line != account_no)
+					{
+						fileout << line + "\n";
+					}
+				}
+				filein.close();
+				fileout.close();
+				remove("lost_password.txt");
+				rename("replace.txt", "lost_password.txt");
+
+				//Thong bao cho user_no biet tai khoan da doi mat khau
+				fstream fileout1, fileout2;
+				fileout1.open("notice_user_new.txt", ios::out | ios::app);
+				fileout2.open("notice_user_old.txt", ios::out | ios::app);
+				filein.open("account.txt", ios::in);
+				string user_no;
+				//Tim user_no cua tai khoan muon doi mat khau
+				while (!filein.eof())
+				{
+					getline(filein, line);
+					if (line == "{")
+					{
+						getline(filein, user_no);
+						getline(filein, line);
+						if (line == account_no)break;
+					}
+				}
+				filein.close();
+				fileout1 << "{\n" << user_no << "\nTai khoan " << account_no << " cua ban da duoc reset mat khau. Mat khau moi la : "
+					<< NewPassword1 << "\n}\n";
+				fileout2 << "{\n" << user_no << "\nTai khoan " << account_no << " cua ban da duoc reset mat khau. Mat khau moi la : "
+					<< NewPassword1 << "\n}\n";
+				fileout1.close();
+				fileout2.close();
+				
+				CanhLe(MaxKT); cout << "Ban reset mat khau thanh cong !!!" << endl;
+				system("pause");
+				system("cls");
+				Search_Role(now_user_no, now_account_no, now_account_no);
+			}
+			else
+			{
+				CanhLe(MaxKT); cout << "Cac mat khau khong khop !!!" << endl;
+				CanhLe(MaxKT); cout << "Ban muon: " << endl;
+				CanhLe(2 * MaxKT); cout << "1. Tiep tuc reset mat khau." << endl;
+				CanhLe(2 * MaxKT); cout << "2. Tro lai." << endl;
+				string schoice;
+				CanhLe(MaxKT); cout << "Lua chon: ";
+				getline(cin, schoice);
+				bool check;
+				do
+				{
+					check = true;
+					check = Check_Choice(schoice, 2);
+					if (check == false)
+					{
+						CanhLe(MaxKT); cout << setw(kc) << left << "Nhap sai ! Hay nhap lai: ";
+						getline(cin, schoice);
+					}
+				} while (check == false);
+				if (schoice == "1")
+				{
+					system("cls");
+					ResetPassWord(now_user_no, now_account_no);
+				}
+				else//Tro lai
+				{
+					system("cls");
+					Search_Role(now_user_no, now_account_no, now_account_no);
+				}
+			}
+			break;
+		}
+	}
+	if (check_account == false)
+	{
+		CanhLe(MaxKT);
+		cout << "Tai khoan ban nhap vao khong dung" << endl;
+		CanhLe(MaxKT); cout << "Ban muon: " << endl;
+		CanhLe(2 * MaxKT); cout << "1. Tiep tuc reset mat khau." << endl;
+		CanhLe(2 * MaxKT); cout << "2. Tro lai." << endl;
+		string schoice;
+		CanhLe(MaxKT); cout << "Lua chon: ";
+		getline(cin, schoice);
+		bool check;
+		do
+		{
+			check = true;
+			check = Check_Choice(schoice, 2);
+			if (check == false)
+			{
+				CanhLe(MaxKT); cout << setw(kc) << left << "Nhap sai ! Hay nhap lai: ";
+				getline(cin, schoice);
+			}
+		} while (check == false);
+		if (schoice == "1")
+		{
+			system("cls");
+			ResetPassWord(now_user_no, now_account_no);
+		}
+		else//Tro lai
+		{
+			system("cls");
+			Search_Role(now_user_no, now_account_no, now_account_no);
+		}
+	}
 }

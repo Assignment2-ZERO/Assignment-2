@@ -1,4 +1,3 @@
-
 {
 minhtham02
 Quan ly nguoi dung
@@ -6,6 +5,14 @@ Quan ly nguoi dung
 {
 minhtham01
 Doc gia
+}
+{
+minhtham06
+Quan ly nguoi dung va thu thu
+}
+{
+minhtham07
+Doc gia, quan ly nguoi dung va thu thu
 }
 {
 minhtham03
@@ -20,26 +27,22 @@ minhtham05
 Doc gia va thu thu
 }
 {
-minhtham06
-Quan ly nguoi dung va thu thu
-}
-{
-minhtham07
-Doc gia, quan ly nguoi dung va thu thu
-}
-{
-minhtham08
-Doc gia va thu thu
-}
-{
 minh01
-Doc gia, quan ly nguoi dung va thu thu
+Quan ly nguoi dung
 }
 {
 minh02
-Doc gia, quan ly nguoi dung va thu thu
+Quan ly nguoi dung
 }
 {
 minh03
-Doc gia, quan ly nguoi dung va thu thu
+Quan ly nguoi dung
+}
+{
+minh04
+Quan ly nguoi dung
+}
+{
+minhtham
+Doc gia
 }

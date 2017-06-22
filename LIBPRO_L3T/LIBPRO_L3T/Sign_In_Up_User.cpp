@@ -110,21 +110,19 @@ void Sign_User_Fail(string &now_user_no ,int what_fail, string str, string fail,
 		CanhLe(MaxKT);	cout << str << endl;
 		CanhLe(2 * MaxKT);	cout << "1. " << fail << " lai.\n";
 		CanhLe(2 * MaxKT);	cout << "2. Tro lai.\n";
-		CanhLe(MaxKT);	cout << "Lua chon cua ban: ";
+		CanhLe(MaxKT);	cout << "Lua chon : ";
 		getline(cin, SChoice);
-
 		Check = true;
 		Check = Check_Choice(SChoice, 2);
-		stringstream(SChoice) >> Choice;
-
-		if (Check == false)// Nếu kiểm tra biến nhập vào ko phù hợp thì yêu cầu nhập lại
+		while (Check == false)
 		{
-			CanhLe(MaxKT);	cout << "Ban da nhap sai. Moi ban nhap lai !\n ";
-			system("pause");
-			system("cls");
-			continue;
+			CanhLe(MaxKT);	cout << "Nhap sai! Nhap lai : ";
+			getline(cin, SChoice);
+			Check = Check_Choice(SChoice, 2);
 		}
-		else if (Choice == 1)
+		stringstream(SChoice) >> Choice;
+	
+		if (Choice == 1)
 		{
 			system("cls");
 			switch (what_fail)
