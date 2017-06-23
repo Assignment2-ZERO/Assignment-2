@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LIBPRO.cpp">
@@ -24,37 +20,16 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sign_In_Up_Account.cpp">
+    <ClCompile Include="NguoiDung.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Sign_In_Up_User.cpp">
+    <ClCompile Include="TaiKhoan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Suggestion_Resolution.cpp">
+    <ClCompile Include="Sach.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Notice.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Review_SignUpAccount.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Password.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Search_See_DeleteUSER.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="See_Search_Delete_AddACCOUNT.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Xem_Sua_Xoa_ThemSACH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GioHang.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Muon_ChapNhanMuon_TraSACH.cpp">
+    <ClCompile Include="ThongBao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,40 +40,19 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Sign_In_Up_Account.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sign_In_Up_User.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Class.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Suggestion_Resolution.h">
+    <ClInclude Include="NguoiDung.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Notice.h">
+    <ClInclude Include="TaiKhoan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Review_SignUpAccount.h">
+    <ClInclude Include="Sach.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Password.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Search_See_DeleteUSER.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="See_Search_Delete_AddACCOUNT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Xem_Sua_Xoa_ThemSACH.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GioHang.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MuonTraSACH.h">
+    <ClInclude Include="ThongBao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

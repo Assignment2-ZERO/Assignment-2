@@ -1,0 +1,28 @@
+Luong:
+Tim sach
+Xem sach
+Them Sach 
+Xoa sach
+Sua thong tin sach
+Them vao gio hang
+Xem va chinh sua gio hang
+
+Tam:
+Xem thong tin nguoi dung
+Xet duyet muon sach
+Xet duyet tra sach
+Nguoi dung qua han tra sach
+Tim kiem va xem danh sach  nguoi dung 
+Xoa nguoi dung
+Them nguoi dung
+Gui yeu cau muon sach
+
+Thanh:
+Quen mat khau
+xet duyet reset mat khau
+Dang ki tai khoan
+Xet duyet yeu cau dang ki tai khoan
+Xem danh sach nguoi dung va tai khoan
+Tim kiem tai khoan
+Xoa tai khoan
+Them tai khoan

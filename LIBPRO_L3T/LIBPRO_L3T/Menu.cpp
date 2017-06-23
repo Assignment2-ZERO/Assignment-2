@@ -3,22 +3,13 @@
 #include <sstream>
 #include <fstream>
 #include <string>
-#include "Password.h"
-#include "Notice.h"
 #include "Class.h"
 #include "Menu.h"
-#include "Function.h"
-#include "Sign_In_Up_User.h"
-#include "Sign_In_Up_Account.h"
-#include "Suggestion_Resolution.h"
-#include "See_Search_Delete_AddACCOUNT.h"
-#include "Search_See_DeleteUSER.h"
-#include "Xem_Sua_Xoa_ThemSACH.h"
-#include "MuonTraSACH.h"
-#include "Xem_Sua_Xoa_ThemSACH.h"
-#include "GioHang.h"
+#include "NguoiDung.h"
+#include"TaiKhoan.h"
+#include"Sach.h"
+#include "ThongBao.h"
 #define max 50
-#include "Review_SignUpAccount.h"
 #define MaxKT 10 //Max Khoang Trang
 #define MaxCN 100 //Max Cot Ngang danh cho 1 Role
 #define MaxCN2 50 //Max Cot Ngang danh cho 2 Role
@@ -712,6 +703,10 @@ void Menu_Account_RM(string & now_user_no, string & now_account_no)
 	case 4:
 		system("cls");
 		TimSach_NangCao(now_user_no, now_account_no);
+		break;
+	case 5:
+		system("cls");
+		themVaoGioHang(now_user_no, now_account_no,false);
 		break;
 	case 6:
 		system("cls");

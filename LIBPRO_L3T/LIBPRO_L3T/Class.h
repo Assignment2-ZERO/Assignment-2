@@ -11,12 +11,6 @@
 using namespace std;
 #define MaxKT 10 //Max Khoang Trang
 #define MaxCN 100 //Max Cot Ngang
-class Role;
-class Account;
-class AccountRoleMap;
-class User;
-
-
 
 class Account
 {
@@ -163,8 +157,6 @@ private:
 	string active;
 	string user_no;
 };
-
-
 class User
 {
 public:
@@ -388,10 +380,6 @@ public:
 		file.close();
 		return check;
 	}
-	void setAccount_list(Account account)
-	{
-		account_list.push_back(account);
-	}
 
 private:
 	string user_no;
@@ -400,7 +388,6 @@ private:
 	string user_birth;
 	string user_job;
 	string user_email;
-	vector<Account> account_list;
 };
 class Role
 {
@@ -516,7 +503,5 @@ private:
 	string account_no;
 	string role_id;
 };
-
-
 
 #endif

@@ -4,11 +4,6 @@ minhtham01
 Toi da lam mat sach
 }
 {
-minhtham03
-.
-Toi da lam mat sach
-}
-{
 minhtham04
 .
 Toi da lam mat sach

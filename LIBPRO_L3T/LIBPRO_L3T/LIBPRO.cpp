@@ -1,17 +1,9 @@
 ﻿#include "Menu.h"
 #include "Class.h"
-#include "Sign_In_Up_User.h"
-#include"Sign_In_Up_Account.h"
-#include"Search_See_DeleteUSER.h"
-#include "See_Search_Delete_AddACCOUNT.h"
-#include "Suggestion_Resolution.h"
-#include "Password.h"
-#include"Notice.h"
-#include <iomanip>
-#include"Xem_Sua_Xoa_ThemSACH.h"
-#include"GioHang.h"
-#include "MuonTraSACH.h"
-#include"Password.h"
+#include "NguoiDung.h"
+#include"TaiKhoan.h"
+#include"Sach.h"
+#include "ThongBao.h"
 using namespace std;
 
 

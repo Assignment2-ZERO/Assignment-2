@@ -1,5 +1,5 @@
 {
-zero
+minhtham
 0000
 1613166
 22-07-1997
@@ -15,8 +15,16 @@ sinh vien
 aa@hcmut.edu.vn
 }
 {
-minhtham
+ductam
 0003
+12312
+12-12-2016
+sinh vien
+hhh@hcmut.edu.vn
+}
+{
+ducthanh
+0004
 12312
 12-12-2016
 sinh vien

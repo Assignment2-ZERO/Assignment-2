@@ -1,3 +1,12 @@
-﻿  Menu.cpp
+﻿  ThongBao.cpp
+c:\users\lenovo\google drive\assignment2\libpro_l3t\libpro_l3t\thongbao.cpp(78): warning C4553: '==': operator has no effect; did you intend '='?
+  TaiKhoan.cpp
+  Sach.cpp
+c:\users\lenovo\google drive\assignment2\libpro_l3t\libpro_l3t\sach.cpp(183): warning C4102: 'next': unreferenced label
+c:\users\lenovo\google drive\assignment2\libpro_l3t\libpro_l3t\sach.cpp(222): warning C4102: 'next2': unreferenced label
+c:\users\lenovo\google drive\assignment2\libpro_l3t\libpro_l3t\sach.cpp(304): warning C4102: 'back': unreferenced label
+c:\users\lenovo\google drive\assignment2\libpro_l3t\libpro_l3t\sach.cpp(596): warning C4390: ';': empty controlled statement found; is this the intent?
+  NguoiDung.cpp
+  Generating Code...
   LIBPRO_L3T.vcxproj -> C:\Users\Lenovo\Google Drive\Assignment2\LIBPRO_L3T\Debug\LIBPRO_L3T.exe
   LIBPRO_L3T.vcxproj -> C:\Users\Lenovo\Google Drive\Assignment2\LIBPRO_L3T\Debug\LIBPRO_L3T.pdb (Partial PDB)
